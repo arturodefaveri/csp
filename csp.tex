@@ -1,0 +1,123 @@
+\documentclass{amsart}
+\usepackage[parfill]{parskip} 
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[pdftex]{hyperref}
+\usepackage{euscript}
+
+\hypersetup{
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=blue,
+  urlcolor=black
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\def\phi{\varphi}
+\DeclareMathOperator{\Clo}{Clo}
+\DeclareMathOperator{\CSP}{CSP}
+\DeclareMathOperator{\Inv}{Inv}
+\DeclareMathOperator{\Pol}{Pol}
+\DeclareMathOperator{\NP}{NP}
+
+\begin{document}
+\title{CSP Fast Track}
+\author{Arturo}
+
+
+\begin{abstract}
+   In this note 
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+Let $R$ be a set of relation symbols. 
+Let $\EuScript{A}=(A, P)$ be a relational structure over $R$.
+By the \textbf{constraint satisfaction problem} $\CSP(\EuScript{A})$\footnote{More often denoted by $\CSP(P)$.} we mean the following decision problem: 
+given a set $X$ of variables and a set $\Sigma$ of atomic formulas\footnote{Without equality.} over $R$, decide whether there is 
+%find (or state that it is impossible to find) 
+an assignment $(-)^{\EuScript{A}} : X \to A$ such that 
+$\EuScript{A} \models \Sigma$; 
+i.e. for all $r \in R_n$ and for all $x_1, \ldots, x_n \in X$ 
+\begin{equation}
+    r(x_1, \ldots, x_n) \in \Sigma \implies  (x_1^{{\EuScript{A}}}, \ldots, x_n^{{\EuScript{A}}}) \in r^{\EuScript{A}}
+\end{equation}
+
+Starting point: consider the case when $A$ is finite. 
+
+We shall say that $\CSP({\EuScript{A}})$ is decidable if there is a uniform (unique) algorithm deciding $\CSP({\EuScript{A}})$ for every $X$ and $\Sigma$ over $R$. 
+
+Let $F$ be a set of function symbols. 
+Let $\mathbf{A}=(A, \Phi)$ be an algebra over $F$. 
+By the \textbf{constraint satisfaction problem} $\CSP(\mathbf{A})$ we mean the following decision problem:
+decide uniformly, that is by a unique algorithm, every $\CSP((A,P))$ such that $P \subseteq \Inv(\Phi)$. 
+
+\begin{definition}
+    Let $F$ be a set of function symbols and $\mathbf{A}$ be an algebra over $F$. 
+    We denote by $\Clo(\mathbf{A})$ the smallest set containing 
+    \begin{equation*}
+        \{f^\mathbf{A}: f \in F\} \quad \text{ and } \quad \{\pi^n_i: A^n \to A, 1 \le i \le n, n \in \omega\}
+    \end{equation*}
+and closed under composition. 
+\end{definition}
+Goal: prove 
+
+\begin{theorem}
+    Let $\mathbf{A}$ be a finite idempotent algebra. 
+    Then the following are equivalent: 
+    \begin{enumerate}
+        \item $\CSP(\mathbf{A})$ is polynomial-time decidable; 
+        \item $\Clo(\mathbf{A})$ contains a weak near-unanimity operation; 
+        \item for every $\mathbf{B} \in HS(\mathbf{A})$, $\Clo(\mathbf{B}) \neq \{\pi^n_i: 1 \le i \le n, n \in \omega\}$. 
+    \end{enumerate}
+    Otherwise, $\CSP(\mathbf{A})$ is $\NP$-complete. 
+\end{theorem}
+
+\section{Relational Clones} 
+\begin{definition}
+    Let $R$ be a set of relation symbols and $\EuScript{A}$ be a relational structure over $R$.
+    We denote by $\Clo(\EuScript{A})$ the smallest set containing 
+    \begin{equation*}
+        \{r^\EuScript{A} : r \in R\} \quad \text{ and } \quad \{\Delta^{(n)} : n \in \omega\}
+    \end{equation*}
+    and closed under intersection and truncation\footnote{If $\rho \in \Clo(\EuScript{A})$, then also $\{(a_1, \ldots, a_{n-1}): (a_1, \ldots, a_{n-1}, a_n) \in \rho, \text{ for some } a_n \in A \} \in \Clo{\EuScript{A}}$.}.
+\end{definition}
+
+\begin{remark}
+    Observe that $\Clo(\EuScript{A})$ is given by all the relations $\rho$ of $A$ definable\footnote{Using the symbols in $R$ and allowing equality.} by a first-order primitive positive formula
+    (that is, involving only conjunctions and existential quantifications). 
+    Recall that $\rho \subseteq A^n$ is definable if there is a formula $\phi(x_1, \ldots, x_n)$ such that 
+    \begin{equation*}
+        \EuScript{A} \models \phi(a_1, \ldots, a_n) \iff (a_1, \ldots, a_n) \in \rho
+    \end{equation*}
+\end{remark}
+
+\begin{theorem}
+    For any $\EuScript{A}=(A,P)$ and $\EuScript{B}=(A,\Gamma)$\footnote{Not necessarily over the same $R$!} with $\Gamma \subseteq \Clo(\EuScript{A})$ and with $\Gamma$ finite, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$. 
+\end{theorem}
+
+\begin{corollary}
+    Let $\EuScript{A}=(A,P)$ and $\EuScript{B}=(A, \Clo(\EuScript{A}))$. 
+    Then 
+    \begin{enumerate}
+        \item $\CSP(\EuScript{A})$ is polynomial-time decidable iff $\CSP(\EuScript{B})$ is. 
+        \item $\CSP(\EuScript{A})$ is $\NP$-complete iff $\CSP(\EuScript{B})$ is. 
+    \end{enumerate}
+\end{corollary}
+    
+
+
+
+\end{document}
