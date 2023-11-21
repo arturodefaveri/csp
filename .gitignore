@@ -2,3 +2,6 @@
 csp.fdb_latexmk
 csp.log
 csp.synctex.gz
+csp.fls
+csp.aux
+csp.out
