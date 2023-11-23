@@ -6,7 +6,7 @@
 
 \hypersetup{
   colorlinks,
-  citecolor=black,
+  citecolor=blue,
   filecolor=black,
   linkcolor=blue,
   urlcolor=black
@@ -25,6 +25,8 @@
 \newtheorem{remark}[theorem]{Remark}
 
 \def\phi{\varphi}
+\def\E{\exists}
+\def\A{\forall}
 \DeclareMathOperator{\Clo}{Clo}
 \DeclareMathOperator{\CSP}{CSP}
 \DeclareMathOperator{\Inv}{Inv}
@@ -46,7 +48,7 @@
 Let $R$ be a set of relation symbols. 
 Let $\EuScript{A}=(A, P)$ be a relational structure over $R$.
 By the \textbf{constraint satisfaction problem} $\CSP(\EuScript{A})$\footnote{More often denoted by $\CSP(P)$.} we mean the following decision problem: 
-given a set $X$ of variables and a set $\Sigma$ of atomic formulas\footnote{Without equality.} over $R$, decide whether there is 
+given a set $X$ of variables and a set $\Sigma(X,R)$ of atomic formulas  over $R$ (and $X$), decide whether there is 
 %find (or state that it is impossible to find) 
 an assignment $(-)^{\EuScript{A}} : X \to A$ such that 
 $\EuScript{A} \models \Sigma$; 
@@ -85,6 +87,20 @@ Goal: prove
     Otherwise, $\CSP(\mathbf{A})$ is $\NP$-complete. 
 \end{theorem}
 
+\section{Kinds of Operations}
+
+\begin{definition}
+    An operation $\phi: A^n \to A$ is called 
+    \begin{enumerate}
+        \item \textbf{essentially unary} if there is a function $\psi: A \to A$ such that 
+        \begin{equation*}
+        \phi(a_1, \ldots, a_n) = \psi(a_i)
+        \end{equation*}
+        for all $a_1, \ldots, a_n \in A$. 
+        \item \textbf{idempotent} if $\phi(a, \ldots, a)=a$ for all $a \in A$. 
+    \end{enumerate}
+\end{definition}
+
 \section{Relational Clones} 
 \begin{definition}
     Let $R$ be a set of relation symbols and $\EuScript{A}$ be a relational structure over $R$.
@@ -96,7 +112,7 @@ Goal: prove
 \end{definition}
 
 \begin{remark}
-    Observe that $\Clo(\EuScript{A})$ is given by all the relations $\rho$ of $A$ definable\footnote{Using the symbols in $R$ and allowing equality.} by a first-order primitive positive formula
+    Observe that $\Clo(\EuScript{A})$ is given by all the relations $\rho$ of $A$ definable by a first-order primitive positive formula
     (that is, involving only conjunctions and existential quantifications). 
     Recall that $\rho \subseteq A^n$ is definable if there is a formula $\phi(x_1, \ldots, x_n)$ such that 
     \begin{equation*}
@@ -105,9 +121,31 @@ Goal: prove
 \end{remark}
 
 \begin{theorem}
-    For any $\EuScript{A}=(A,P)$ and $\EuScript{B}=(A,\Gamma)$\footnote{Not necessarily over the same $R$!} with $\Gamma \subseteq \Clo(\EuScript{A})$ and with $\Gamma$ finite, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
+    Let $G$ be a set and $D$ be a finite set of relation symbols. 
+    For any $\EuScript{A}=(A,\Gamma)$ over $G$ and $\EuScript{B}=(A,\Delta)$ over $D$ with $\Delta \subseteq \Clo(\EuScript{A})$, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
     \begin{proof}
-        
+        Let $\Sigma(X,D)$ be a set of equations. 
+        Let $d(x_1, \ldots, x_n) \in \Sigma$. 
+        For every $a_1, \ldots, a_n \in A$ 
+        \begin{equation}
+            \label{equiv}
+            \EuScript{B} \models d(a_1, \ldots, a_n)  \iff (a_1, \ldots, a_n) \in \delta 
+            \iff \EuScript{A} \models \phi(a_1, \ldots, a_n)
+        \end{equation}
+        for some $\phi(x_1, \ldots, x_n)$ of the form 
+        \begin{equation*}
+            \E y_1, \ldots, y_m \,( g_1(z^{1}_{1}, \ldots, z^{1}_{n_1}) \land \cdots \land g_k(z^{k}_{1}, \ldots, z^{k}_{n_k}))
+        \end{equation*} 
+        where $g_1, \ldots, g_k \in G$ and $z^{i}_{j} \in \{x_1, \ldots, x_n, y_1, \ldots, y_m\}$. 
+
+        Now, for each $d(x_1, \ldots, x_n) \in \Sigma$ perfrom the following steps: 
+        \begin{enumerate}
+            \item add $\{g_1(z^{1}_{1}, \ldots, z^{1}_{n_1}), \ldots, g_k(z^{k}_{1}, \ldots, z^{k}_{n_k})\}$ to $\Sigma$; 
+            \item remove $d(x_1, \ldots, x_n)$ from $\Sigma$. 
+        \end{enumerate}
+        At the the end we obtain a set of equations $T(X,G)$ over $G$. 
+        \textcolor{red}{This is a polynomial-time reduction. (It's reasonable but for me this kind of stuff is like a leap of faith).} 
+        By \eqref{equiv} it is clear that we can find an assignment $X \to A$ such that $\EuScript{B} \models \Sigma$ iff we can find an assignment such that $\EuScript{A} \models T$.
     \end{proof} 
 \end{theorem}
 
@@ -120,5 +158,15 @@ Goal: prove
     \end{enumerate}
 \end{corollary}
 
+\begin{theorem}[\cite{jeavons}]
+    Let $\EuScript{A}$ be a relational structure. 
+    If $\Pol(\EuScript{A})$ contains essentially unary operations only, $\CSP(\EuScript{A})$ is $\NP$-complete. 
+\end{theorem}
 
+
+\begin{thebibliography}{9}
+    
+    \bibitem{jeavons}
+       Jeavons, P. (1998). On the algebraic structure of combinatorial problems, \emph{Theoretical Computer Science} 200, 185–204.
+ \end{thebibliography}
 \end{document}
