@@ -62,6 +62,7 @@ i.e. for all $r \in R_n$ and for all $x,y,x_1, \ldots, x_n \in X$
 Clearly, it is enough to find an assignment only for those variables that appear in $\Sigma$. 
 
 Starting point: consider the case when $A$ is finite. 
+\textcolor{red}{The set of relations is finite?}
 
 We shall say that $\CSP({\EuScript{A}})$ is decidable if there is a uniform (unique) algorithm deciding $\CSP({\EuScript{A}})$ for every $\Sigma$ over $R$. 
 
@@ -176,6 +177,47 @@ Goal: prove
     In this case $\Clo_1(\mathbf{A})$ is a group. 
 \end{remark}
 
+\begin{lemma}
+    \label{clo1_group}
+    Let $A=\{a_1, \ldots, a_k\}$ be a finite set. 
+    Let $\mathbf{A}=(A, \Phi)$ be an algebra. \textcolor{red}{such that $\Clo_1(\mathbf{A})$ is a group -- where do we need it?} 
+    Then the relation 
+    \begin{equation}
+        \sigma:=\{(\psi(a_1), \ldots, \psi_(a_k)) : \psi \in \Clo_1(\mathbf{A})\}
+    \end{equation}
+    belongs to $\Inv(\Phi)$. 
+    \begin{proof}
+        We show that for every $f \in F_n$ and for every matrix $M$
+        \begin{equation*}
+            \begin{bmatrix}
+              a_1^1 & \cdots & a^1_n \\
+              \vdots & \ddots &  \vdots  \\
+              a_k^1 & \cdots & a^k_n
+              \end{bmatrix}
+          \end{equation*}
+          such that $(a_1^1, \ldots, a^k_1) \in \sigma, \ldots, (a_1^n, \ldots, a^k_n) \in \sigma$ we have 
+          \begin{equation*}
+            (f^{\mathbf{A}}(a_1^1, \ldots, a^1_n), \ldots,f^{\mathbf{A}}(a_k^1, \ldots, a^k_n)) \in \sigma
+          \end{equation*} 
+          %Since $(a_1^i, \ldots, a^k_i) \in \sigma$, there is $\psi_i \in \Clo_1(\mathbf{A})$ such that 
+          By hypothesis we can write $M$ as 
+          \begin{equation*}
+            \begin{bmatrix}
+              \psi_1(a_1) & \cdots & \psi_n(a_1) \\
+              \vdots & \ddots &  \vdots  \\
+              \psi_1(a_k) & \cdots & \psi_n(a_k)
+              \end{bmatrix}
+          \end{equation*}
+          but then 
+        \begin{multline*}
+            (f^{\mathbf{A}}(a_1^1, \ldots, a^1_n), \ldots,f^{\mathbf{A}}(a_k^1, \ldots, a^k_n))\\
+             = (f^{\mathbf{A}}(\psi_1(a_1), \ldots, \psi_n(a_1)), \ldots,f^{\mathbf{A}}(\psi_1(a_k), \ldots, \psi_n(a_k))) \\
+             = (f^{\mathbf{A}}[\psi_1, \ldots, \psi_n](a_1), \ldots, f^{\mathbf{A}}[\psi_1, \ldots, \psi_n](a_k))
+        \end{multline*}
+        and we conclude since $f^{\mathbf{A}}[\psi_1, \ldots, \psi_n] \in \Clo_1(\mathbf{A})$. 
+    \end{proof}
+\end{lemma}
+
 \begin{theorem}
     Let $F$ be a set of function symbols and 
     let $\mathbf{A}=(A, \Phi)$  be a finite surjective algebra over $F$.
@@ -197,7 +239,7 @@ Goal: prove
     That $\CSP(\EuScript{A})$ is polynomial-time reducible to $\CSP(\EuScript{B})$ is obvious.
     Let $\Sigma$ be a set of atomic formulas over $G$ and let $\{x_1, \ldots, x_k\}$ be variables that do not appear in $\Sigma$. 
     By Remark \ref{surj_group}, since $\mathbf{A}$ is surjective, $\Clo_1(\mathbf{A})$ forms a group. 
-    Hence, the relation $\sigma$ of Lemma belongs to $\Inv(\Phi)$. 
+    Moreover, the relation $\sigma$ of Lemma \ref{clo1_group} belongs to $\Inv(\Phi)$. 
     Now, perform the following steps: 
         \begin{enumerate}
             \item replace every formula $d_i(x)$ with $x \equiv x_i$; 
@@ -221,6 +263,31 @@ Goal: prove
     Consider $(-)'^{\EuScript{A}}:=\psi^{-1}(-)^{\EuScript{A}}$. 
     Every relation in $\Inv(\Phi)$ is invariant under $\psi^{-1}$, hence defining $(x)^{\EuScript{B}}:=(x)'^{\EuScript{A}}$ is enough to have $\EuScript{B} \models \Sigma$.  
 \end{proof}
+\end{theorem}
+
+\section{Subalgebras and Images}
+\begin{theorem}
+    Let $\mathbf{A}$ be a finite algebra. 
+    \begin{enumerate}
+        \item if $\CSP(\mathbf{A})$ is polynomial-time decidable, so is $\CSP(\mathbf{B})$ for every $\mathbf{B} \le \mathbf{A}$; 
+        \item if there is $\mathbf{B} \le \mathbf{A}$ such that $\CSP(\mathbf{B})$ is $\NP$-complete, so is $\CSP(\mathbf{A})$. 
+    \end{enumerate}
+    \begin{proof}
+        Let $\mathbf{A}=(A, \Phi)$.
+        Observe that $\Inv(\Phi|B) \subseteq \Inv(\Phi)$.
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}
+    Let $\mathbf{A}, \mathbf{B}$ be two algebras. 
+    \begin{enumerate}
+        \item if $\CSP(\mathbf{A})$ is polynomial-time decidable, so is $\CSP(\mathbf{B})$ for every surjective homomorphism $\alpha: \mathbf{A} \to \mathbf{B}$; 
+        \item if there is a surjective homomorphism $\alpha: \mathbf{A} \to \mathbf{B}$ such that $\CSP(\mathbf{B})$ is $\NP$-complete, so is $\CSP(\mathbf{A})$. 
+    \end{enumerate}
+    \begin{proof}
+        Let $\mathbf{A}=(A, \Phi_A)$, $\mathbf{B}=(B, \Phi_B)$ over the same function symbols $F$. 
+        
+    \end{proof}
 \end{theorem}
 
 
