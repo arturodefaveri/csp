@@ -50,9 +50,9 @@ Let $R$ be a set of relation symbols.
 Let $\EuScript{A}=(A, P)$ be a relational structure over $R$.
 Let $X$ be a countable set of variables. 
 By the \textbf{constraint satisfaction problem} $\CSP(\EuScript{A})$\footnote{More often denoted by $\CSP(P)$.} we mean the following decision problem: 
-given a set $\Sigma$ of atomic formulas over $R$, decide whether there is 
+given a \textcolor{blue}{finite} set $\Sigma$ of atomic formulas over $R$, decide whether there is 
 %find (or state that it is impossible to find) 
-an assignment $(-)^{\EuScript{A}} : X \to A$ and an interpretation of the symbols of $R$ as relations of the appropriate arity such that 
+an assignment $(-)^{\EuScript{A}} : X \to A$ such that 
 $\EuScript{A} \models \Sigma$; 
 i.e. for all $r \in R_n$ and for all $x,y,x_1, \ldots, x_n \in X$ 
 \begin{align}
@@ -61,15 +61,18 @@ i.e. for all $r \in R_n$ and for all $x,y,x_1, \ldots, x_n \in X$
 \end{align}
 Clearly, it is enough to find an assignment only for those variables that appear in $\Sigma$. 
 
-Starting point: consider the case when $A$ is finite. 
-\textcolor{red}{The set of relations is finite?}
+Important: if a set of relation symbols is not fixed, a relational structure $\EuScript{A}$ will be always thought as a structure over the set of its relations. 
 
-We shall say that $\CSP({\EuScript{A}})$ is decidable if there is a uniform (unique) algorithm deciding $\CSP({\EuScript{A}})$ for every $\Sigma$ over $R$. 
+Starting point: consider the case when $A$ is finite. 
+%\textcolor{red}{The set of relations is finite?}
+
+%We shall say that $\CSP({\EuScript{A}})$ is decidable if there is an algorithm deciding $\CSP({\EuScript{A}})$ for every $\Sigma$ over $R$. 
 
 Let $F$ be a set of function symbols. 
 Let $\mathbf{A}=(A, \Phi)$ be an algebra over $F$. 
-By the \textbf{constraint satisfaction problem} $\CSP(\mathbf{A})$ we mean the following decision problem:
-decide uniformly, that is by a unique algorithm, every $\CSP((A,P))$ such that $P \subseteq \Inv(\Phi)$. 
+Let $\EuScript{A}:=(A, \Inv(\Phi))$. 
+By $\CSP(\mathbf{A})$ we mean the decision problem $\CSP(\EuScript{A})$. 
+%decide uniformly, that is by a unique algorithm, every $\CSP((A,P))$ such that $P \subseteq \Inv(\Phi)$. 
 
 \begin{definition}
     Let $F$ be a set of function symbols and $\mathbf{A}$ be an algebra over $F$. 
@@ -79,6 +82,7 @@ decide uniformly, that is by a unique algorithm, every $\CSP((A,P))$ such that $
     \end{equation*}
 and closed under composition. 
 \end{definition}
+
 Goal: prove 
 
 \begin{theorem}
@@ -97,7 +101,7 @@ Goal: prove
 \begin{definition}
     An operation $\phi: A^n \to A$ is called 
     \begin{enumerate}
-        \item \textbf{essentially unary} if there is a function $\psi: A \to A$ such that 
+        \item \textbf{essentially unary} if there is an index $i$ and a function $\psi: A \to A$ such that 
         \begin{equation*}
         \phi(a_1, \ldots, a_n) = \psi(a_i)
         \end{equation*}
@@ -113,7 +117,22 @@ Goal: prove
     \begin{equation*}
         \{r^\EuScript{A} : r \in R\} \quad \text{ and } \quad \{\Delta^{(n)} : n \in \omega\}
     \end{equation*}
-    and closed under intersection and truncation\footnote{If $\rho \in \Clo(\EuScript{A})$, then also $\{(a_1, \ldots, a_{n-1}): (a_1, \ldots, a_{n-1}, a_n) \in \rho, \text{ for some } a_n \in A \} \in \Clo{\EuScript{A}}$.}.
+    and closed under 
+    \begin{enumerate}
+        \item \textbf{permutaion}: if $\rho \in \Clo(\EuScript{A})$, then also
+        \begin{equation*}
+            \{(a_{\sigma(1)}, \ldots, a_{\sigma(n)}) : \sigma \in S_n, (a_1, \ldots, a_n) \in \rho\} \in \Clo{\EuScript{A}}
+        \end{equation*} 
+        \item \textbf{extension}: if $\rho \in \Clo(\EuScript{A})$, then also
+        \begin{equation*}
+            \{(a_{1}, \ldots, a_{n}, a_{n+1}) :  (a_1, \ldots, a_n) \in \rho, a_{n+1} \in A\} \in \Clo{\EuScript{A}}
+        \end{equation*} 
+        \item \textbf{truncation}: if $\rho \in \Clo(\EuScript{A})$, then also
+        \begin{equation*}
+            \{(a_1, \ldots, a_{n-1}): (a_1, \ldots, a_{n-1}, a_n) \in \rho, \text{ for some } a_n \in A \} \in \Clo{\EuScript{A}}
+        \end{equation*}
+        \item intersection. 
+    \end{enumerate}
 \end{definition}
 
 \begin{remark}
@@ -126,31 +145,38 @@ Goal: prove
 \end{remark}
 
 \begin{theorem}
-    Let $G$ be a set and $D$ be a finite set of relation symbols. 
-    For any $\EuScript{A}=(A,\Gamma)$ over $G$ and $\EuScript{B}=(A,\Delta)$ over $D$ with $\Delta \subseteq \Clo(\EuScript{A})$, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
+    %Let $G$ be a set and $D$ be a finite set of relation symbols. 
+    For any pair of relational structures $\EuScript{A}=(A,\Gamma)$ 
+    %over $G$ 
+    and $\EuScript{B}=(A, H)$ 
+    %over $D$ 
+    such that $H$ is finite and $H \subseteq \Clo(\EuScript{A})$, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
     \begin{proof}
-        Let $\Sigma$ be a set of atomic formulas over $D$.  
-        Let $d(x_1, \ldots, x_n) \in \Sigma$. 
+        Let $\Sigma$ be a set of atomic formulas over $H$.  
+        Let $\eta(x_1, \ldots, x_n) \in \Sigma$. 
         For every $a_1, \ldots, a_n \in A$ 
         \begin{equation}
             \label{equiv}
-            \EuScript{B} \models d(a_1, \ldots, a_n)  \iff (a_1, \ldots, a_n) \in \delta 
+            \EuScript{B} \models \eta(a_1, \ldots, a_n)  
+            %\iff (a_1, \ldots, a_n) \in \delta 
             \iff \EuScript{A} \models \phi(a_1, \ldots, a_n)
         \end{equation}
         for some $\phi(x_1, \ldots, x_n)$ of the form 
         \begin{equation*}
-            \E y_1, \ldots, y_m \,( g_1(z^{1}_{1}, \ldots, z^{1}_{n_1}) \land \cdots \land g_k(z^{k}_{1}, \ldots, z^{k}_{n_k}))
+            \E y_1, \ldots, y_m \,( \gamma_1(z^{1}_{1}, \ldots, z^{1}_{n_1}) \land \cdots \land \gamma_k(z^{k}_{1}, \ldots, z^{k}_{n_k}))
         \end{equation*} 
-        where $g_1, \ldots, g_k \in G$ and $z^{i}_{j} \in \{x_1, \ldots, x_n, y_1, \ldots, y_m\}$.
+        where $\gamma_1, \ldots, \gamma_k \in \Gamma$ and $z^{i}_{j} \in \{x_1, \ldots, x_n, y_1, \ldots, y_m\}$.
         We can assume (up to renaming of variables) that $y_1, \ldots, y_m$ do not appear in any formula of $\Sigma$.  
 
-        Now, for each $d(x_1, \ldots, x_n) \in \Sigma$ perform the following steps: 
+        Now, for each $\eta(x_1, \ldots, x_n) \in \Sigma$ perform the following steps: 
         \begin{enumerate}
-            \item add $\{g_1(z^{1}_{1}, \ldots, z^{1}_{n_1}), \ldots, g_k(z^{k}_{1}, \ldots, z^{k}_{n_k})\}$ to $\Sigma$; 
-            \item remove $d(x_1, \ldots, x_n)$ from $\Sigma$. 
+            \item add $\{\gamma_1(z^{1}_{1}, \ldots, z^{1}_{n_1}), \ldots, \gamma_k(z^{k}_{1}, \ldots, z^{k}_{n_k})\}$ to $\Sigma$; 
+            \item remove $\eta(x_1, \ldots, x_n)$ from $\Sigma$. 
         \end{enumerate}
         At the the end we obtain a set of equations $T$ over $G$. 
-        \textcolor{red}{This is a polynomial-time reduction. (It's reasonable but for me this kind of stuff is like a leap of faith).} 
+        \textcolor{red}{This is a polynomial-time reduction. 
+        %(It's reasonable but for me this kind of stuff is like a leap of faith).
+        } 
         By \eqref{equiv} it is clear that we can find an assignment $X \to A$ such that $\EuScript{B} \models \Sigma$ iff we can find an assignment such that $\EuScript{A} \models T$.
     \end{proof} 
 \end{theorem}
@@ -180,10 +206,11 @@ Goal: prove
 \begin{lemma}
     \label{clo1_group}
     Let $A=\{a_1, \ldots, a_k\}$ be a finite set. 
-    Let $\mathbf{A}=(A, \Phi)$ be an algebra. \textcolor{red}{such that $\Clo_1(\mathbf{A})$ is a group -- where do we need it?} 
+    Let $\mathbf{A}=(A, \Phi)$ be an algebra. 
+    %\textcolor{red}{such that $\Clo_1(\mathbf{A})$ is a group -- where do we need it?} 
     Then the relation 
     \begin{equation}
-        \sigma:=\{(\psi(a_1), \ldots, \psi_(a_k)) : \psi \in \Clo_1(\mathbf{A})\}
+        \sigma:=\{(\psi(a_1), \ldots, \psi(a_k)) : \psi \in \Clo_1(\mathbf{A})\}
     \end{equation}
     belongs to $\Inv(\Phi)$. 
     \begin{proof}
@@ -218,6 +245,12 @@ Goal: prove
     \end{proof}
 \end{lemma}
 
+\begin{definition}
+    Let $\mathbf{A}$ be an algebra. 
+    Let $\Id(A)$ be the set of idempotent operations on $A$. 
+    We define $\Clo_{\Id}(\mathbf{A}): = \Clo(\mathbf{A}) \cap \Id(A)$. 
+\end{definition}
+
 \begin{theorem}
     Let $F$ be a set of function symbols and 
     let $\mathbf{A}=(A, \Phi)$  be a finite surjective algebra over $F$.
@@ -228,22 +261,22 @@ Goal: prove
         \item $\CSP(\mathbf{A})$ is $\NP$-complete iff $\CSP(\mathbf{B})$ is. 
     \end{enumerate}
 \begin{proof}
-    Let $A=\{a_1, \ldots, a_k\}$ and let $\Delta:=\{\{a_1\}, \ldots, \{a_k\}\}$. 
-    For every $\rho \in \Inv(\Phi)$, let $r$ be a relation symbol of the same arity and let $R:=\{r: \rho \in \Inv(\Phi)\}$. 
-    For every $\delta_i:=\{a_i\} \in \Delta$, let $d_i$ be a relation symbol of the same arity and let $G:= R \cup \{d_i: \delta_i \in \Delta\}$. 
-    Let $\EuScript{A}:=(A, \Inv(\Phi))$ and $\EuScript{B}:=(A, \Inv(\Phi) \cup \Delta )$. 
+    Let $A=\{a_1, \ldots, a_k\}$ and let $\Gamma:=\{\gamma_1, \ldots, \gamma_k\}$ where $\gamma_i :=\{a_i\}$. 
+    %For every $\rho \in \Inv(\Phi)$, let $r$ be a relation symbol of the same arity and let $R:=\{r: \rho \in \Inv(\Phi)\}$. 
+    %For every $\delta_i:=\{a_i\} \in \Delta$, let $d_i$ be a relation symbol of the same arity and let $G:= R \cup \{d_i: \delta_i \in \Delta\}$. 
+    Let $\EuScript{A}:=(A, \Inv(\Phi))$ and $\EuScript{B}:=(A, \Inv(\Phi) \cup \Gamma )$. 
 
     By definition and by Remark $\CSP(\mathbf{B})$ is polynomial-time equivalent to $\CSP(\mathbf{A})$ iff 
     $\CSP(\EuScript{B})$ is polynomial-time equivalent to $\CSP(\EuScript{A})$.
 
     That $\CSP(\EuScript{A})$ is polynomial-time reducible to $\CSP(\EuScript{B})$ is obvious.
-    Let $\Sigma$ be a set of atomic formulas over $G$ and let $\{x_1, \ldots, x_k\}$ be variables that do not appear in $\Sigma$. 
+    Let $\Sigma$ be a set of atomic formulas over $\Inv(\Phi) \cup \Gamma$ and let $\{x_1, \ldots, x_k\}$ be variables that do not appear in $\Sigma$. 
     By Remark \ref{surj_group}, since $\mathbf{A}$ is surjective, $\Clo_1(\mathbf{A})$ forms a group. 
     Moreover, the relation $\sigma$ of Lemma \ref{clo1_group} belongs to $\Inv(\Phi)$. 
     Now, perform the following steps: 
         \begin{enumerate}
-            \item replace every formula $d_i(x)$ with $x \equiv x_i$; 
-            \item add the formula $s(x_1, \ldots, x_k)$. 
+            \item replace every formula $\gamma_i(x)$ with $x \equiv x_i$; 
+            \item add the formula $\sigma(x_1, \ldots, x_k)$. 
         \end{enumerate}
     At the the end we obtain a set of equations $T$ over $R$. 
     \textcolor{red}{This is a polynomial-time reduction.}
@@ -258,7 +291,7 @@ Goal: prove
         \end{cases}
     \end{equation*}
     Then $(-)^\EuScript{A}$ is such that $\EuScript{A} \models T$.  
-    Conversely, assume that there is an assignment $()^{\EuScript{A}}$ such that $\EuScript{A} \models T$. 
+    Conversely, assume that there is an assignment $(-)^{\EuScript{A}}$ such that $\EuScript{A} \models T$. 
     There is $\psi \in \Clo_1(\mathbf{A})$ such that $x_i^{\EuScript{A}} = \psi(a_i)$ for all $i$. 
     Consider $(-)'^{\EuScript{A}}:=\psi^{-1}(-)^{\EuScript{A}}$. 
     Every relation in $\Inv(\Phi)$ is invariant under $\psi^{-1}$, hence defining $(x)^{\EuScript{B}}:=(x)'^{\EuScript{A}}$ is enough to have $\EuScript{B} \models \Sigma$.  
