@@ -3,6 +3,7 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage[pdftex]{hyperref}
 \usepackage{euscript}
+\usepackage{tikz-cd}
 
 \hypersetup{
   colorlinks,
@@ -196,6 +197,11 @@ Goal: prove
 \end{theorem}
 
 \section{Surjective Algebras}
+
+\begin{definition}
+    An algebra $\mathbf{A}$ is \textbf{surjective} if all the element of $\Clo(\mathbf{A})$ are surjective. 
+\end{definition}
+
 \begin{remark}
     \label{surj_group}
     Let $\mathbf{A}$ be an algebra. 
@@ -312,16 +318,47 @@ Goal: prove
 \end{theorem}
 
 \begin{theorem}
-    Let $\mathbf{A}, \mathbf{B}$ be two algebras. 
+    Let $\mathbf{A}=(A, \Phi_A), \mathbf{B}=(B, \Phi_B)$ be two finite algebras of the same type.  
     \begin{enumerate}
         \item if $\CSP(\mathbf{A})$ is polynomial-time decidable, so is $\CSP(\mathbf{B})$ for every surjective homomorphism $\alpha: \mathbf{A} \to \mathbf{B}$; 
         \item if there is a surjective homomorphism $\alpha: \mathbf{A} \to \mathbf{B}$ such that $\CSP(\mathbf{B})$ is $\NP$-complete, so is $\CSP(\mathbf{A})$. 
     \end{enumerate}
     \begin{proof}
-        Let $\mathbf{A}=(A, \Phi_A)$, $\mathbf{B}=(B, \Phi_B)$ over the same function symbols $F$. 
-        
+        %Let $\mathbf{A}=(A, \Phi_A)$, $\mathbf{B}=(B, \Phi_B)$. 
+        Let $\EuScript{B}=(B, \Inv(\Phi_B))$.
+        We show that there is $\Gamma \subseteq \Inv(\Phi_B)$ such that, definining $\EuScript{A}=(A, \Gamma)$, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$. 
+        For every $\rho \in \Inv(\Phi_B)_n$ let 
+        \begin{equation*}
+            \alpha^{-1}(\rho):=\{(a_1, \ldots, a_n) \in A^n : (\alpha(a_1), \ldots, \alpha(a_n)) \in \rho\}
+        \end{equation*}
+        Clearly, $\alpha^{-1}(\rho) \in \Inv(\Phi_A)_n$
+        and therefore, letting $\Gamma:=\{\alpha^{-1}(\rho) : \rho \in \Gamma\}$, $\Gamma \subseteq \Inv(\Phi_A)$. 
+        Let $\Sigma$ be a set of atomic formulas over $\Inv(\Phi_B)$. 
+        Perform the following step: replace every formula $\rho(x_1, \ldots, x_n)$ with $\alpha^{-1}(\rho)(x_1, \ldots, x_n)$.       
+        We obtain a set of equations $T$ over $\Gamma$.
+        Let $\beta$ be a section of $\alpha$.  
+        \begin{equation*}
+            \begin{tikzcd}
+                %[column sep=small]
+                & X \arrow[dl, "(-)^{\EuScript{A}}", swap] \arrow[dr, "(-)^{\EuScript{B}}"] & \\
+                A \arrow[rr, bend right=15, "\alpha", swap] & & B \arrow[ll, bend right=15, dotted, "\beta"]
+            \end{tikzcd}
+        \end{equation*}
+        Referring to the assignments in the picture, each defined in terms of the other so that the diagram commute, 
+        it is clear that $\EuScript{A} \models T$ iff $\EuScript{B} \models \Sigma$. 
     \end{proof}
 \end{theorem}
+
+\section{Simple Algebras}
+\begin{definition}
+    An algebra $\mathbf{A}$ is called \textbf{simple} if the lattice of congruences on $\mathbf{A}$ is $\{\Delta, \nabla \}$. 
+    An algebra $\mathbf{A}$ is \textbf{strictly simple} if it is simple and has no nontrivial subalgebras. 
+\end{definition}
+
+\begin{remark}
+    Since the lattice of congruence of $\mathbf{A}$ is in bijection with the set of surjective homomorphisms from $\mathbf{A}$, 
+    $\mathbf{A}$ is simple if whenever there is a surjective homomorphism $\mathbf{A} \to \mathbf{B}$ such that $|B| < |A|$, then $\mathbf{B}$ is the trivial algebra. 
+\end{remark}
 
 
 \begin{thebibliography}{9}
