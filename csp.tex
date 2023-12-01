@@ -145,7 +145,7 @@ Goal: prove
     \end{equation*}
 \end{remark}
 
-\begin{theorem}
+\begin{theorem}[\cite{jeavons}]
     %Let $G$ be a set and $D$ be a finite set of relation symbols. 
     For any pair of relational structures $\EuScript{A}=(A,\Gamma)$ 
     %over $G$ 
@@ -209,6 +209,64 @@ Goal: prove
     In this case $\Clo_1(\mathbf{A})$ is a group. 
 \end{remark}
 
+Let $\mathbf{A}$ be an algebra and let $B$ be a subset of $A$. 
+Let 
+\begin{equation*}
+    \Clo(\mathbf{A})|B:=\{\phi|B: \phi \in \Clo(\mathbf{A}), \nabla_B \in \Inv(\phi)\}
+\end{equation*} 
+We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$. 
+
+\begin{lemma}[\cite{jeavons}]
+    \label{image}
+    Let $\EuScript{A}=(A, P)$ be a relational structure. 
+    Let $\phi \in \Pol(P)_1$. 
+    For $\rho \in P_n$ let 
+    \begin{equation*}
+        \phi(\rho):=\{(\phi(a_1), \ldots, \phi(a_n)):(a_1, \ldots, a_n) \in \rho\}
+    \end{equation*}
+    Let $\EuScript{B}:=(A, \phi(P))$ where $\phi(P):=\{\phi(\rho): \rho \in P\}$.
+    Then 
+    \begin{enumerate}
+        \item $\CSP(\EuScript{A})$ is polynomial-time decidable iff $\CSP(\EuScript{B})$ is; 
+        \item $\CSP(\EuScript{A})$ is $\NP$-complete iff $\CSP(\EuScript{B})$ is. 
+    \end{enumerate}
+    \begin{proof}
+        
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}
+    Let $\mathbf{A}$ be a finite algebra. 
+    Then there is $B \subseteq A$ such that $\mathbf{A}|B$ is surjective and 
+    \begin{enumerate}
+        \item $\CSP(\mathbf{A})$ is polynomial-time decidable iff $\CSP(\mathbf{A}|B)$ is; 
+        \item $\CSP(\mathbf{A})$ is $\NP$-complete iff $\CSP(\mathbf{A}|B)$.
+    \end{enumerate}
+    \begin{proof}
+        Assume that $\mathbf{A}$ is not surjective. 
+        Then by Remark \ref{surj_group} there is $\psi \in \Clo_1(\mathbf{A})$ not surjective. 
+        Let $\phi \in \Clo_1(\mathbf{A})$ such that $\phi$ is not surjective and $\phi[A]$ has minimal cardinality. 
+        Define $B:=\phi[A]$. 
+        We show that $\mathbf{A}|B$ is surjective. 
+        Let $\psi \in \Clo_1(\mathbf{A})|B$; if, towards a contradiction, $\psi[B] \subset B$, then $\psi \phi [A] \subset \phi[A] \subset A$ contradicting the minimality. 
+        The last part of the statement follows immediately from Lemma \ref{image}. 
+    \end{proof}
+\end{theorem}
+
+
+\begin{definition}
+    Let $\mathbf{A}$ be an algebra. 
+    Let $\Id(A)$ be the set of idempotent operations on $A$. 
+    We define $\Clo_{\Id}(\mathbf{A}): = \Clo(\mathbf{A}) \cap \Id(A)$. 
+\end{definition}
+
+\begin{remark}
+    \label{idempotent}
+    Let $\mathbf{A}=(A, \Phi)$. 
+    Observe that an operation $\phi \in \Clo(\mathbf{A})$ is idempotent iff it preserves the relations in $\Delta^{(1)}=\{\{a\} : a \in A\}$. 
+    Hence $\Inv(\Clo_{\Id}(\mathbf{A})) = \Clo(\EuScript{A})$ where $\EuScript{A}=(A, \Inv(\Phi) \cup \Delta^{(1)})$. 
+\end{remark}
+
 \begin{lemma}
     \label{clo1_group}
     Let $A=\{a_1, \ldots, a_k\}$ be a finite set. 
@@ -251,12 +309,6 @@ Goal: prove
     \end{proof}
 \end{lemma}
 
-\begin{definition}
-    Let $\mathbf{A}$ be an algebra. 
-    Let $\Id(A)$ be the set of idempotent operations on $A$. 
-    We define $\Clo_{\Id}(\mathbf{A}): = \Clo(\mathbf{A}) \cap \Id(A)$. 
-\end{definition}
-
 \begin{theorem}
     Let $F$ be a set of function symbols and 
     let $\mathbf{A}=(A, \Phi)$  be a finite surjective algebra over $F$.
@@ -267,12 +319,12 @@ Goal: prove
         \item $\CSP(\mathbf{A})$ is $\NP$-complete iff $\CSP(\mathbf{B})$ is. 
     \end{enumerate}
 \begin{proof}
-    Let $A=\{a_1, \ldots, a_k\}$ and let $\Gamma:=\{\gamma_1, \ldots, \gamma_k\}$ where $\gamma_i :=\{a_i\}$. 
+    Let $A=\{a_1, \ldots, a_k\}$ and let $\Gamma:=\Delta^{(1)}$. 
     %For every $\rho \in \Inv(\Phi)$, let $r$ be a relation symbol of the same arity and let $R:=\{r: \rho \in \Inv(\Phi)\}$. 
     %For every $\delta_i:=\{a_i\} \in \Delta$, let $d_i$ be a relation symbol of the same arity and let $G:= R \cup \{d_i: \delta_i \in \Delta\}$. 
     Let $\EuScript{A}:=(A, \Inv(\Phi))$ and $\EuScript{B}:=(A, \Inv(\Phi) \cup \Gamma )$. 
 
-    By definition and by Remark $\CSP(\mathbf{B})$ is polynomial-time equivalent to $\CSP(\mathbf{A})$ iff 
+    By definition and by Remark \ref{idempotent} $\CSP(\mathbf{B})$ is polynomial-time equivalent to $\CSP(\mathbf{A})$ iff 
     $\CSP(\EuScript{B})$ is polynomial-time equivalent to $\CSP(\EuScript{A})$.
 
     That $\CSP(\EuScript{A})$ is polynomial-time reducible to $\CSP(\EuScript{B})$ is obvious.
@@ -334,8 +386,8 @@ Goal: prove
         Clearly, $\alpha^{-1}(\rho) \in \Inv(\Phi_A)_n$
         and therefore, letting $\Gamma:=\{\alpha^{-1}(\rho) : \rho \in \Gamma\}$, $\Gamma \subseteq \Inv(\Phi_A)$. 
         Let $\Sigma$ be a set of atomic formulas over $\Inv(\Phi_B)$. 
-        Perform the following step: replace every formula $\rho(x_1, \ldots, x_n)$ with $\alpha^{-1}(\rho)(x_1, \ldots, x_n)$.       
-        We obtain a set of equations $T$ over $\Gamma$.
+        Replace every formula $\rho(x_1, \ldots, x_n)$ with $\alpha^{-1}(\rho)(x_1, \ldots, x_n)$.       
+        We obtain a set of equations $T$ over $\Gamma$ by a polynomial-time reduction. 
         Let $\beta$ be a section of $\alpha$.  
         \begin{equation*}
             \begin{tikzcd}
@@ -362,8 +414,9 @@ Goal: prove
 
 
 \begin{thebibliography}{9}
-    
+    \bibitem{bulatov-jeavons}
+    Bulatov, A. A.,  Jeavons, P., Krokhin, A. A. (2005). Classifying the complexity of constraints using finite algebras. \emph{SIAM Journal of Computation} 34(3), 720– 742.
     \bibitem{jeavons}
-       Jeavons, P. (1998). On the algebraic structure of combinatorial problems, \emph{Theoretical Computer Science} 200, 185–204.
+    Jeavons, P. (1998). On the algebraic structure of combinatorial problems, \emph{Theoretical Computer Science} 200, 185–204.
  \end{thebibliography}
 \end{document}
