@@ -225,11 +225,6 @@ Goal: prove
     \end{enumerate}
 \end{corollary}
 
-\begin{theorem}[\cite{jeavons}]
-    Let $\EuScript{A}$ be a relational structure. 
-    If $\Pol(\EuScript{A})$ contains essentially unary operations only, $\CSP(\EuScript{A})$ is $\NP$-complete. 
-\end{theorem}
-
 \section{Surjective Algebras}
 
 \begin{definition}
@@ -351,6 +346,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
 \end{lemma}
 
 \begin{theorem}
+    \label{thm_surj}
     Let $F$ be a set of function symbols and 
     let $\mathbf{A}=(A, \Phi)$  be a finite surjective algebra over $F$.
     Let $\mathbf{B}:=(A, \Clo_{\id}(\mathbf{A}))$. 
@@ -399,6 +395,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
 
 \section{Subalgebras and Images}
 \begin{theorem}
+    \label{sub}
     Let $\mathbf{A}$ be a finite algebra. 
     \begin{enumerate}
         \item if $\CSP(\mathbf{A})$ is polynomial-time decidable, so is $\CSP(\mathbf{B})$ for every $\mathbf{B} \le \mathbf{A}$; 
@@ -411,6 +408,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
 \end{theorem}
 
 \begin{theorem}
+    \label{homo}
     Let $\mathbf{A}, \mathbf{B}$ be two finite algebras of the same type.  
     \begin{enumerate}
         \item if $\CSP(\mathbf{A})$ is polynomial-time decidable, so is $\CSP(\mathbf{B})$ for every surjective homomorphism $\alpha: \mathbf{A} \to \mathbf{B}$; 
@@ -453,34 +451,67 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     $\mathbf{A}$ is simple if whenever there is a surjective homomorphism $\mathbf{A} \to \mathbf{B}$ such that $|B| < |A|$, then $\mathbf{B}$ is the trivial algebra. 
 \end{remark}
 
+\begin{definition}
+    Let $\mathbf{G}$ be a group acting on a set $A$. 
+    We say that $\mathbf{G}$ is (or, more accurately, that the action is)
+    %\begin{enumerate}
+        %\item \textbf{regular} if it is transitive and free; 
+        %\item 
+        \textbf{primitive} if $\{A\}$ and $\{\{a\} : a \in A\}$ are the only partitions invariant under $\mathbf{G}$. 
+    %\end{enumerate}
+\end{definition}
+
+\begin{remark}
+    Let $\mathbf{G}$ be a group acting on $A$. 
+    Each $g \in G$ induces an operation $\phi_g: A \to A$ given by $\phi_g(a)=g \cdot a$. 
+    Let $\Phi_\mathbf{G}:=\{\phi_g: g \in G\}$
+    Thus a $\mathbf{G}$-set can be seen as an algebra $(A, \Phi_\mathbf{G})$. 
+    The action is primitive iff this algebra is simple. 
+\end{remark}
+
 \begin{theorem}
     [Classification of strictly simple finite algebras, \cite{classification}]
     Let $\mathbf{A}$ be a finite strictly simple surjective algebra. 
-    If $\mathbf{A}$ has trivial subalgebras, $\mathbf{A}$ is term-equivalent to the following: 
+    If $\mathbf{A}$ has trivial subalgebras, $\mathbf{A}$ is term-equivalent to one of the following: 
     \begin{enumerate}
-        \item 
+        \item j
+        \item kind
+        \item \label{three} $(A, \Phi_\mathbf{G})$ for some primitive group $\mathbf{G}$. 
     \end{enumerate}
-    If $\mathbf{A}$ has nontrivial subalgebras, $\mathbf{A}$ is term-equivalent to the following: 
+    If $\mathbf{A}$ has nontrivial subalgebras, $\mathbf{A}$ is term-equivalent to one of the following: 
     \begin{enumerate}
         \item 
     \end{enumerate}
 \end{theorem}
+
+\begin{lemma}[\cite{jeavons}]
+    Let $\EuScript{A}$ be a relational structure. 
+    If $\Pol(\EuScript{A})$ contains essentially unary operations only, $\CSP(\EuScript{A})$ is $\NP$-complete. 
+\end{lemma}
 
 \begin{theorem}
     \label{ess-unary}
     Let $\mathbf{A}$ be a finite strictly simple surjective algebra.
     If all the elements of $\Clo(\mathbf{A})$ are essentially unary, then $\CSP(\mathbf{A})$ is $\NP$-complete. 
-    Otherwise, $\CSP(\mathbf{A})$ is polynomial-time decidable. 
+    %Otherwise, $\CSP(\mathbf{A})$ is polynomial-time decidable. 
+    \begin{proof}
+        %If $\mathbf{A}$ is of kind \eqref{three}, 
+    \end{proof}
 \end{theorem}
 
-%\begin{corollary}
-%    Let $\mathbf{A}$ be a finite idempotent algebra. 
-%    If there is $\mathbf{B} \in HS(\mathbf{A})$ such that $\Clo(\mathbf{B}) = \{\pi^n_i: 1 \le i \le n, n \in \omega\}$, then 
-%    $\CSP(\mathbf{A})$ is $\NP$-complete. 
-%    \begin{proof}
-        
-%    \end{proof}
-%\end{corollary}
+\begin{corollary}
+    Let $\mathbf{A}$ be a finite 
+    %idempotent 
+    algebra. 
+    If there is $\mathbf{B} \in HS(\mathbf{A})$ such that $\Clo(\mathbf{B}) = \{\pi^n_i: 1 \le i \le n, n \in \omega\}$, then 
+    $\CSP(\mathbf{A})$ is $\NP$-complete. 
+    \begin{proof}
+        We can assume without loss of generality that $\mathbf{B}$ is surjective by Theorem \ref{thm_surj}. 
+        \textcolor{red}{Why we can dispose of strictly simple?}
+        If $\mathbf{B}$ is such that $\Clo(\mathbf{B}) = \{\pi^n_i: 1 \le i \le n, n \in \omega\}$, then $\CSP(\mathbf{B})$ is $\NP$-complete by Theorem \ref{ess-unary}. 
+        We conclude using the second cluases of Theorems \ref{sub} and \ref{homo}. 
+   \end{proof}
+\end{corollary}
 
 
 
