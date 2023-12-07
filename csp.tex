@@ -4,6 +4,7 @@
 \usepackage[pdftex]{hyperref}
 \usepackage{euscript}
 \usepackage{tikz-cd}
+\usepackage{appendix}
 
 \hypersetup{
   colorlinks,
@@ -24,6 +25,9 @@
 
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+
 
 \def\phi{\varphi}
 \def\E{\exists}
@@ -34,6 +38,7 @@
 \DeclareMathOperator{\Pol}{Pol}
 \DeclareMathOperator{\NP}{NP}
 \DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\End}{End}
 
 \begin{document}
 \title{CSP Fast Track}
@@ -53,7 +58,7 @@ Let $\EuScript{A}
 $ be a relational structure over $R$.
 Let $X$ be a countable set of variables. 
 By the \textbf{constraint satisfaction problem} $\CSP(\EuScript{A})$\footnote{More often denoted by $\CSP(P)$.} we mean the following decision problem: 
-given a \textcolor{blue}{finite} set $\Sigma$ of atomic formulas over $R$, decide whether there is 
+given a finite set $\Sigma$ of atomic formulas over $R$, decide whether there is 
 %find (or state that it is impossible to find) 
 an assignment $(-)^{\EuScript{A}} : X \to A$ such that 
 $\EuScript{A} \models \Sigma$; 
@@ -64,9 +69,15 @@ i.e. for all $r \in R_n$ and for all $x,y,x_1, \ldots, x_n \in X$
 \end{align}
 Clearly, it is enough to find an assignment only for those variables that appear in $\Sigma$. 
 
-Important: if a set of relation symbols is not fixed, a relational structure $\EuScript{A}$ will be always thought as a structure over the set of its relations. 
-
-Starting point: consider the case when $A$ is finite. 
+%Important: if a set of relation symbols is not fixed, a relational structure $\EuScript{A}$ will be always thought as a structure over the set of its relations. 
+\begin{remark}
+    Usually we deal with \emph{indexed} relational structures, 
+    that is we fix a set of relation symbols $R$ and we consider a set $A$ with a set $P$ of relations on $A$ indexed by the elements of $R$. 
+    Sometimes is useful to deal with \emph{non-indexed} relational structures $(A,P)$. 
+    In this case $P$ will serve as the index set as well. 
+    The same applies to algebraic structures (i.e. algebras) and function symbols.  
+\end{remark}
+%Starting point: consider the case when $A$ is finite. 
 %\textcolor{red}{The set of relations is finite?}
 
 %We shall say that $\CSP({\EuScript{A}})$ is decidable if there is an algorithm deciding $\CSP({\EuScript{A}})$ for every $\Sigma$ over $R$. 
@@ -136,14 +147,32 @@ Goal: prove
 \begin{definition}
     An operation $\phi: A^n \to A$ is called 
     \begin{enumerate}
-        \item \textbf{essentially unary} if there is an index $i$ and a function $\psi: A \to A$ such that 
+        \item \textbf{essentially unary} if there is an index $i$ and a non-constant function $\psi: A \to A$ such that 
         \begin{equation*}
         \phi(a_1, \ldots, a_n) = \psi(a_i)
         \end{equation*}
         for all $a_1, \ldots, a_n \in A$. 
         \item \textbf{idempotent} if $\phi(a, \ldots, a)=a$ for all $a \in A$. 
+        \item a \textbf{near unanimity} operation if for all $a,b \in A$ 
+        \begin{equation*}
+            \phi(b, a, \ldots, a) = \phi(a, b, \ldots, a) = \cdots = \phi(a, \ldots, a, b)=b 
+        \end{equation*}
     \end{enumerate}
 \end{definition}
+
+\begin{example}
+    \label{dual}
+    A ternary near unanimity operation is called a \textbf{majority} operation. 
+    For instance the ternary function defined as 
+    \begin{equation*}
+        \delta(a,b,c) = 
+        \begin{cases}
+            b & \text{ if } b = c \\
+            a & \text{ otherwise}
+        \end{cases}
+    \end{equation*}
+    is a majority operation called \textbf{dual discriminator}. 
+\end{example}
 
 \section{Relational Clones} 
 \begin{definition}
@@ -154,7 +183,7 @@ Goal: prove
     \end{equation*}
     and closed under 
     \begin{enumerate}
-        \item \textbf{permutaion}: if $\rho \in \Clo(\EuScript{A})$, then also
+        \item \textbf{permutation}: if $\rho \in \Clo(\EuScript{A})$, then also
         \begin{equation*}
             \{(a_{\sigma(1)}, \ldots, a_{\sigma(n)}) : \sigma \in S_n, (a_1, \ldots, a_n) \in \rho\} \in \Clo{\EuScript{A}}
         \end{equation*} 
@@ -189,18 +218,18 @@ Goal: prove
     \begin{proof}
         Let $\Sigma$ be a set of atomic formulas over $H$.  
         Let $\eta(x_1, \ldots, x_n) \in \Sigma$. 
-        For every $a_1, \ldots, a_n \in A$ 
+        Then there is $\phi(x_1, \ldots, x_n)$ of the form 
+        \begin{equation*}
+            \E y_1, \ldots, y_m \,( \gamma_1(z^{1}_{1}, \ldots, z^{1}_{n_1}) \land \cdots \land \gamma_k(z^{k}_{1}, \ldots, z^{k}_{n_k}))
+        \end{equation*} 
+        (where $\gamma_1, \ldots, \gamma_k \in \Gamma$ and $z^{i}_{j} \in \{x_1, \ldots, x_n, y_1, \ldots, y_m\}$)
+        such that for $a_1, \ldots, a_n \in A$ 
         \begin{equation}
             \label{equiv}
             \EuScript{B} \models \eta(a_1, \ldots, a_n)  
             %\iff (a_1, \ldots, a_n) \in \delta 
             \iff \EuScript{A} \models \phi(a_1, \ldots, a_n)
         \end{equation}
-        for some $\phi(x_1, \ldots, x_n)$ of the form 
-        \begin{equation*}
-            \E y_1, \ldots, y_m \,( \gamma_1(z^{1}_{1}, \ldots, z^{1}_{n_1}) \land \cdots \land \gamma_k(z^{k}_{1}, \ldots, z^{k}_{n_k}))
-        \end{equation*} 
-        where $\gamma_1, \ldots, \gamma_k \in \Gamma$ and $z^{i}_{j} \in \{x_1, \ldots, x_n, y_1, \ldots, y_m\}$.
         We can assume (up to renaming of variables) that $y_1, \ldots, y_m$ do not appear in any formula of $\Sigma$.  
 
         Now, for each $\eta(x_1, \ldots, x_n) \in \Sigma$ perform the following steps: 
@@ -223,6 +252,10 @@ Goal: prove
         \item $\CSP(\EuScript{A})$ is polynomial-time decidable iff $\CSP(\EuScript{B})$ is. 
         \item $\CSP(\EuScript{A})$ is $\NP$-complete iff $\CSP(\EuScript{B})$ is. 
     \end{enumerate}
+    \begin{proof}
+        We prove that $\CSP(\EuScript{A})$ is polynomial-time equivalent to $\CSP(\EuScript{B})$. 
+
+    \end{proof}
 \end{corollary}
 
 \section{Surjective Algebras}
@@ -233,15 +266,20 @@ Goal: prove
 
 \begin{remark}
     \label{surj_group}
-    Let $\mathbf{A}$ be an algebra. 
+    Let $\mathbf{A}$ be a finite algebra over $F$. 
     Every element of $\Clo(\mathbf{A})$ is surjective iff every element of $\Clo_1(\mathbf{A})$ is. 
-    In this case $\Clo_1(\mathbf{A})$ is a group. 
+    In this case $\Clo_1(\mathbf{A})$ is a group.
+    It is enough to show that for every $f \in F$, there is $\phi \in \Clo_1(\mathbf{A})$ such that $f^\mathbf{A} \phi = 1_\mathbf{A}$. 
+    Let $m:=|A|$. 
+    Then $(f^{\mathbf{A}})^{m!}=1_\mathbf{A}$.
+    Let $n_f$ be the least $n$ such that $(f^{\mathbf{A}})^{n_f}=1_\mathbf{A}$. 
+    Let $\phi:=(f^{\mathbf{A}})^{n_f-1}$. 
 \end{remark}
 
-Let $\mathbf{A}$ be an algebra and let $B$ be a subset of $A$. 
+Let $\mathbf{A}$ be a finite algebra and let $B$ be a subset of $A$. 
 Let 
 \begin{equation*}
-    \Clo(\mathbf{A})|B:=\{\phi|B: \phi \in \Clo(\mathbf{A}), \nabla_B \in \Inv(\phi)\}
+    \Clo(\mathbf{A})|B:=\{\phi \in \Clo(\mathbf{A}): \phi | B \in O_{\mathbf{B}} \}
 \end{equation*} 
 We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$. 
 
@@ -264,8 +302,8 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
         Let $\Sigma$ be a set of atomic formulas over $P$. 
         Replace every occurrence of $\rho(x_1, \ldots, x_n)$ with $\phi(\rho)(x_1, \ldots, x_n)$, 
         obtaining a set of formulas $T$ over $\phi(P)$. 
-        Given any assignment $(-)^{\EuScript{A}}: X \to A$ such that $\EuScript{A} \models \Sigma$, 
-        define $(x)^{\EuScript{B}}:=(x)^{\EuScript{A}}$; then $\EuScript{B} \models T$. 
+        Given any assignment $(-)^{\EuScript{B}}: X \to B$ such that $\EuScript{B} \models T$, 
+        define $(x)^{\EuScript{A}}:=(x)^{\EuScript{B}}$; then $\EuScript{A} \models \Sigma$. 
         Conversely, given any assignment $(-)^{\EuScript{A}}: X \to A$ such that $\EuScript{A} \models \Sigma$,
         defining $(x)^{\EuScript{B}}:=\phi(x^{\EuScript{A}})$ is enough to have $\EuScript{B} \models T$.  
     \end{proof}
@@ -284,7 +322,8 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
         Let $\phi \in \Clo_1(\mathbf{A})$ such that $\phi$ is not surjective and $\phi[A]$ has minimal cardinality. 
         Define $B:=\phi[A]$. 
         We show that $\mathbf{A}|B$ is surjective. 
-        Let $\psi \in \Clo_1(\mathbf{A})|B$; if, towards a contradiction, $\psi[B] \subset B$, then $\psi \phi [A] \subset \phi[A] \subset A$ contradicting the minimality. 
+        Let $\psi \in \Clo_1(\mathbf{A}|B) = \Clo_1(\mathbf{A})|B $;
+        if, towards a contradiction, $\psi[B] \subset B$, then $\psi \phi [A] \subset \phi[A] \subset A$ contradicting the minimality. 
         The last part of the statement follows immediately from Lemma \ref{image}. 
     \end{proof}
 \end{theorem}
@@ -298,7 +337,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
 
 \begin{remark}
     \label{idempotent}
-    Let $\mathbf{A}=(A, \Phi)$. 
+    Let $\mathbf{A}$ be an algebra.  
     Observe that an operation $\phi \in \Clo(\mathbf{A})$ is idempotent iff it preserves the relations in $\Delta^{(1)}=\{\{a\} : a \in A\}$. 
     Hence $\Inv(\Clo_{\id}(\mathbf{A})) = \Clo(\EuScript{A})$ where $\EuScript{A}=(A, \Inv(\mathbf{A}) \cup \Delta^{(1)})$. 
 \end{remark}
@@ -306,7 +345,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
 \begin{lemma}
     \label{clo1_group}
     Let $A=\{a_1, \ldots, a_k\}$ be a finite set. 
-    Let $\mathbf{A}=(A, \Phi)$ be an algebra. 
+    Let $\mathbf{A}$ be an algebra over $F$. 
     %\textcolor{red}{such that $\Clo_1(\mathbf{A})$ is a group -- where do we need it?} 
     Then the relation 
     \begin{equation}
@@ -347,8 +386,8 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
 
 \begin{theorem}
     \label{thm_surj}
-    Let $F$ be a set of function symbols and 
-    let $\mathbf{A}=(A, \Phi)$  be a finite surjective algebra over $F$.
+    %Let $F$ be a set of function symbols and 
+    Let $\mathbf{A}=A$  be a finite surjective algebra.
     Let $\mathbf{B}:=(A, \Clo_{\id}(\mathbf{A}))$. 
     Then   
     \begin{enumerate}
@@ -373,7 +412,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
             \item replace every formula $\gamma_i(x)$ with $x \equiv x_i$; 
             \item add the formula $\sigma(x_1, \ldots, x_k)$. 
         \end{enumerate}
-    At the the end we obtain a set of equations $T$ over $R$. 
+    At the the end we obtain a set of equations $T$ over $\Inv(\mathbf{A})$. 
     \textcolor{red}{This is a polynomial-time reduction.}
     We finally show that we can find an assignment such that $\EuScript{A} \models T$ iff we can find an assignment such that $\EuScript{B} \models \Sigma$.
     Let $(-)^{\EuScript{B}}: X \to A$ be an assignment such that $\EuScript{B} \models \Sigma$. 
@@ -387,8 +426,8 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     \end{equation*}
     Then $(-)^\EuScript{A}$ is such that $\EuScript{A} \models T$.  
     Conversely, assume that there is an assignment $(-)^{\EuScript{A}}$ such that $\EuScript{A} \models T$. 
-    There is $\psi \in \Clo_1(\mathbf{A})$ such that $x_i^{\EuScript{A}} = \psi(a_i)$ for all $i$. 
-    Consider $(-)'^{\EuScript{A}}:=\psi^{-1}(-)^{\EuScript{A}}$. 
+    By definition of $\sigma$, there is $\psi \in \Clo_1(\mathbf{A})$ such that $x_i^{\EuScript{A}} = \psi(a_i)$ for all $i$. 
+    Consider $(-)'^{\EuScript{A}}:=\psi^{-1}\circ(-)^{\EuScript{A}}$. 
     Every relation in $\Inv(\mathbf{A})$ is invariant under $\psi^{-1}$, hence defining $(x)^{\EuScript{B}}:=(x)'^{\EuScript{A}}$ is enough to have $\EuScript{B} \models \Sigma$.  
 \end{proof}
 \end{theorem}
@@ -402,8 +441,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
         \item if there is $\mathbf{B} \le \mathbf{A}$ such that $\CSP(\mathbf{B})$ is $\NP$-complete, so is $\CSP(\mathbf{A})$. 
     \end{enumerate}
     \begin{proof}
-        Let $\mathbf{A}=(A, \Phi)$.
-        Observe that $\Inv(\Phi|B) \subseteq \Inv(\Phi)$.
+        Observe that $\Inv(\mathbf{B}) \subseteq \Inv(\mathbf{A})$.
     \end{proof}
 \end{theorem}
 
@@ -451,32 +489,58 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     $\mathbf{A}$ is simple if whenever there is a surjective homomorphism $\mathbf{A} \to \mathbf{B}$ such that $|B| < |A|$, then $\mathbf{B}$ is the trivial algebra. 
 \end{remark}
 
+\subsection{Group actions}
+Let $\mathbf{G}$ be a group acting on a set $A$.  
+
+There is a well-defined function
+\begin{equation*}
+    G \times A \to A \times A, (g,a) \mapsto (a, g \cdot a)
+\end{equation*} 
+
 \begin{definition}
-    Let $\mathbf{G}$ be a group acting on a set $A$. 
+    The action is called 
+    \begin{enumerate}
+        \item \textbf{transitive} if the above map is surjective; 
+        \item \textbf{free} if the above map is injective; 
+        \item \textbf{regular} if the above map is bijective. 
+    \end{enumerate}
+    We say that the group $\mathbf{G}$ is \textbf{regular} if the action is. 
+\end{definition}
+
+\begin{definition}
     We say that $\mathbf{G}$ is (or, more accurately, that the action is)
-    %\begin{enumerate}
-        %\item \textbf{regular} if it is transitive and free; 
+   %\begin{enumerate}
+        %\item \textbf{regular} if the action is transitive and free; 
         %\item 
         \textbf{primitive} if $\{A\}$ and $\{\{a\} : a \in A\}$ are the only partitions invariant under $\mathbf{G}$. 
     %\end{enumerate}
 \end{definition}
 
 \begin{remark}
-    Let $\mathbf{G}$ be a group acting on $A$. 
     Each $g \in G$ induces an operation $\phi_g: A \to A$ given by $\phi_g(a)=g \cdot a$. 
     Let $\Phi_\mathbf{G}:=\{\phi_g: g \in G\}$
     Thus a $\mathbf{G}$-set can be seen as an algebra $(A, \Phi_\mathbf{G})$. 
     The action is primitive iff this algebra is simple. 
 \end{remark}
 
+\subsection{The Classification Theorem}
+
 \begin{theorem}
-    [Classification of strictly simple finite algebras, \cite{classification}]
+    [\cite{classification}]
     Let $\mathbf{A}$ be a finite strictly simple surjective algebra. 
     If $\mathbf{A}$ has trivial subalgebras, $\mathbf{A}$ is term-equivalent to one of the following: 
     \begin{enumerate}
-        \item j
-        \item kind
-        \item \label{three} $(A, \Phi_\mathbf{G})$ for some primitive group $\mathbf{G}$. 
+        \item \label{one} $(A,\mathcal{R}(\mathbf{G}))$ for some regular group $\mathbf{G}$;
+        \item \label{three} $(A, \Phi_\mathbf{G})$ for some primitive group $\mathbf{G}$; 
+    \end{enumerate}
+    or 
+    \begin{enumerate}
+        \setcounter{enumi}{2}
+        \item there is a finite field $k$ and a $k$-vector space $\mathbf{E}$ with carrier $A$ such that letting $\mathbf{E}'$ be the $\End_k(\mathbf{E})$-module with natural action 
+    \begin{equation*}
+        \End_k(\mathbf{E}) \times A \to A, (\eta, a) \to \eta(a)  
+    \end{equation*}
+    $\mathbf{A}$ is term-equivalent to $(A, \Clo_{\id}(\mathbf{E}') \cup T(\mathbf{E}))$. 
     \end{enumerate}
     If $\mathbf{A}$ has nontrivial subalgebras, $\mathbf{A}$ is term-equivalent to one of the following: 
     \begin{enumerate}
@@ -489,13 +553,20 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     If $\Pol(\EuScript{A})$ contains essentially unary operations only, $\CSP(\EuScript{A})$ is $\NP$-complete. 
 \end{lemma}
 
+\begin{lemma}
+    Let $\EuScript{A}$ be a relational structure. 
+    If $\Pol(\EuScript{A})$ contains a majority operation, $\CSP(\EuScript{\EuScript{A}})$ is polynomial-time decidable. 
+\end{lemma}
+
 \begin{theorem}
     \label{ess-unary}
     Let $\mathbf{A}$ be a finite strictly simple surjective algebra.
     If all the elements of $\Clo(\mathbf{A})$ are essentially unary, then $\CSP(\mathbf{A})$ is $\NP$-complete. 
     %Otherwise, $\CSP(\mathbf{A})$ is polynomial-time decidable. 
     \begin{proof}
-        %If $\mathbf{A}$ is of kind \eqref{three}, 
+        If $\mathbf{A}$ is of kind \eqref{one}, we prove that the dual discriminator operation $\delta$ of Example \ref{dual} belongs to $\Clo(\mathbf{A})$. 
+        But $\delta \in \Clo(\mathbf{A})$ if, by definition of $\mathcal{R}(\mathbf{G})$, 
+
     \end{proof}
 \end{theorem}
 
@@ -507,11 +578,14 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     $\CSP(\mathbf{A})$ is $\NP$-complete. 
     \begin{proof}
         We can assume without loss of generality that $\mathbf{B}$ is surjective by Theorem \ref{thm_surj}. 
+        Then $\Clo_1(\mathbf{B})$ forms a group 
+        This implies that either B is idempotent or has no nontrivial nonproper subalgebras 
         \textcolor{red}{Why we can dispose of strictly simple?}
         If $\mathbf{B}$ is such that $\Clo(\mathbf{B}) = \{\pi^n_i: 1 \le i \le n, n \in \omega\}$, then $\CSP(\mathbf{B})$ is $\NP$-complete by Theorem \ref{ess-unary}. 
         We conclude using the second cluases of Theorems \ref{sub} and \ref{homo}. 
    \end{proof}
 \end{corollary}
+
 
 
 
