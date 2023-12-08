@@ -5,6 +5,8 @@
 \usepackage{euscript}
 \usepackage{tikz-cd}
 \usepackage{appendix}
+\usepackage{comment}
+
 
 \hypersetup{
   colorlinks,
@@ -214,7 +216,7 @@ Goal: prove
     %over $G$ 
     and $\EuScript{B}=(A, H)$ 
     %over $D$ 
-    such that $H$ is finite and $H \subseteq \Clo(\EuScript{A})$, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
+    such that $H$ is \textcolor{red}{finite} and $H \subseteq \Clo(\EuScript{A})$, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
     \begin{proof}
         Let $\Sigma$ be a set of atomic formulas over $H$.  
         Let $\eta(x_1, \ldots, x_n) \in \Sigma$. 
@@ -233,10 +235,10 @@ Goal: prove
         We can assume (up to renaming of variables) that $y_1, \ldots, y_m$ do not appear in any formula of $\Sigma$.  
 
         Now, for each $\eta(x_1, \ldots, x_n) \in \Sigma$ perform the following steps: 
-        \begin{enumerate}
+        \begin{itemize}
             \item add $\{\gamma_1(z^{1}_{1}, \ldots, z^{1}_{n_1}), \ldots, \gamma_k(z^{k}_{1}, \ldots, z^{k}_{n_k})\}$ to $\Sigma$; 
             \item remove $\eta(x_1, \ldots, x_n)$ from $\Sigma$. 
-        \end{enumerate}
+        \end{itemize}
         At the the end we obtain a set of equations $T$ over $G$. 
         \textcolor{red}{This is a polynomial-time reduction. 
         %(It's reasonable but for me this kind of stuff is like a leap of faith).
@@ -245,6 +247,10 @@ Goal: prove
     \end{proof} 
 \end{theorem}
 
+\begin{remark}
+    We observe that in the above result it is not necessary that $A$ is a finite set. 
+\end{remark}
+
 \begin{corollary}
     Let $\EuScript{A}$ be a relational structure and $\EuScript{B}=(A, \Clo(\EuScript{A}))$. 
     Then 
@@ -252,10 +258,14 @@ Goal: prove
         \item $\CSP(\EuScript{A})$ is polynomial-time decidable iff $\CSP(\EuScript{B})$ is. 
         \item $\CSP(\EuScript{A})$ is $\NP$-complete iff $\CSP(\EuScript{B})$ is. 
     \end{enumerate}
+    \begin{comment}
     \begin{proof}
         We prove that $\CSP(\EuScript{A})$ is polynomial-time equivalent to $\CSP(\EuScript{B})$. 
+        Let $\EuScript{A}=(A,P)$. 
+        Let $\Sigma$ be a finite set of atomic formulas over $P$. 
 
     \end{proof}
+\end{comment}
 \end{corollary}
 
 \section{Surjective Algebras}
@@ -286,7 +296,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
 \begin{lemma}[\cite{jeavons}]
     \label{image}
     Let $\EuScript{A}=(A, P)$ be a relational structure. 
-    Let $\phi \in \Pol(\EuScript{A})_1$. 
+    Let $\phi \in \Pol_1(\EuScript{A})$. 
     For $\rho \in P_n$ let 
     \begin{equation*}
         \phi(\rho):=\{(\phi(a_1), \ldots, \phi(a_n)):(a_1, \ldots, a_n) \in \rho\}
@@ -299,13 +309,27 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     \end{enumerate}
     \begin{proof}
         We show that $\CSP(\EuScript{A})$ is polynomial-time equivalent to $\CSP(\EuScript{B})$. 
-        Let $\Sigma$ be a set of atomic formulas over $P$. 
+        Let $\Sigma$ be a finite set of atomic formulas over $P$. 
         Replace every occurrence of $\rho(x_1, \ldots, x_n)$ with $\phi(\rho)(x_1, \ldots, x_n)$, 
         obtaining a set of formulas $T$ over $\phi(P)$. 
-        Given any assignment $(-)^{\EuScript{B}}: X \to B$ such that $\EuScript{B} \models T$, 
-        define $(x)^{\EuScript{A}}:=(x)^{\EuScript{B}}$; then $\EuScript{A} \models \Sigma$. 
+        Given any assignment $(-)^{\EuScript{B}}: X \to A$ such that $\EuScript{B} \models T$, 
+        define $(x)^{\EuScript{A}}:=(x)^{\EuScript{B}}$; then $\EuScript{A} \models \Sigma$.
+        Indeed, given $\rho(x_1, \ldots, x_n) \in \Sigma$, since $\phi \in \Pol_1(\EuScript{A})$: 
+        \begin{align*}
+            \EuScript{B} \models \phi(\rho)(x_1, \ldots, x_n) & \implies (x_1^{\EuScript{B}}, \ldots, x_n^{\EuScript{B}}) \in \phi(\rho) \\
+            & \implies (x_1^{\EuScript{B}}, \ldots, x_n^{\EuScript{B}}) \in \rho \\
+            & \implies (x_1^{\EuScript{A}}, \ldots, x_n^{\EuScript{A}}) \in \rho \\
+            & \implies \EuScript{A} \models \rho(x_1, \ldots, x_n)
+        \end{align*} 
         Conversely, given any assignment $(-)^{\EuScript{A}}: X \to A$ such that $\EuScript{A} \models \Sigma$,
         defining $(x)^{\EuScript{B}}:=\phi(x^{\EuScript{A}})$ is enough to have $\EuScript{B} \models T$.  
+        Indeed, given $\phi(\rho)(x_1, \ldots, x_n) \in T$, by definition of $\phi(P)$: 
+        \begin{align*}
+            \EuScript{A} \models \rho(x_1, \ldots, x_n) & \implies (x_1^{\EuScript{A}}, \ldots, x_n^{\EuScript{A}}) \in \rho \\
+            & \implies (\phi(x_1^{\EuScript{A}}), \ldots, \phi(x_n^{\EuScript{A}}) \in \phi(\rho) \\
+            & \implies  (x_1^{\EuScript{B}}, \ldots, x_n^{\EuScript{B}}) \in \phi(\rho) \\
+            & \implies \EuScript{B} \models \phi(\rho)(x_1, \ldots, x_n) \qedhere
+        \end{align*} 
     \end{proof}
 \end{lemma}
 
@@ -404,23 +428,23 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     $\CSP(\EuScript{B})$ is polynomial-time equivalent to $\CSP(\EuScript{A})$.
 
     That $\CSP(\EuScript{A})$ is polynomial-time reducible to $\CSP(\EuScript{B})$ is obvious.
-    Let $\Sigma$ be a set of atomic formulas over $\Inv(\mathbf{A}) \cup \Gamma$ and let $\{x_1, \ldots, x_k\}$ be variables that do not appear in $\Sigma$. 
+    Let $\Sigma$ be a finite set of atomic formulas over $\Inv(\mathbf{A}) \cup \Gamma$ and let $\{x_1, \ldots, x_k\}$ be variables that do not appear in $\Sigma$. 
     By Remark \ref{surj_group}, since $\mathbf{A}$ is surjective, $\Clo_1(\mathbf{A})$ forms a group. 
     Moreover, the relation $\sigma$ of Lemma \ref{clo1_group} belongs to $\Inv(\mathbf{A})$. 
     Now, perform the following steps: 
-        \begin{enumerate}
+        \begin{itemize}
             \item replace every formula $\gamma_i(x)$ with $x \equiv x_i$; 
             \item add the formula $\sigma(x_1, \ldots, x_k)$. 
-        \end{enumerate}
+        \end{itemize}
     At the the end we obtain a set of equations $T$ over $\Inv(\mathbf{A})$. 
     \textcolor{red}{This is a polynomial-time reduction.}
     We finally show that we can find an assignment such that $\EuScript{A} \models T$ iff we can find an assignment such that $\EuScript{B} \models \Sigma$.
     Let $(-)^{\EuScript{B}}: X \to A$ be an assignment such that $\EuScript{B} \models \Sigma$. 
     Consider the assignment 
     \begin{equation*}
-        (x)^{\EuScript{A}} = 
+        x^{\EuScript{A}} = 
         \begin{cases}
-            (x)^{\EuScript{B}} & \text{ if } x \neq x_i \\
+            x^{\EuScript{B}} & \text{ if } x \neq x_i \\
             a_i & \text{ if } x = x_i 
         \end{cases}
     \end{equation*}
@@ -428,7 +452,16 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     Conversely, assume that there is an assignment $(-)^{\EuScript{A}}$ such that $\EuScript{A} \models T$. 
     By definition of $\sigma$, there is $\psi \in \Clo_1(\mathbf{A})$ such that $x_i^{\EuScript{A}} = \psi(a_i)$ for all $i$. 
     Consider $(-)'^{\EuScript{A}}:=\psi^{-1}\circ(-)^{\EuScript{A}}$. 
-    Every relation in $\Inv(\mathbf{A})$ is invariant under $\psi^{-1}$, hence defining $(x)^{\EuScript{B}}:=(x)'^{\EuScript{A}}$ is enough to have $\EuScript{B} \models \Sigma$.  
+    Define $(x)^{\EuScript{B}}:=(x)'^{\EuScript{A}}$.
+    Let $\rho(y_1, \ldots, y_n), \gamma_i(x) \in \Sigma$. 
+    Every relation in $\Inv(\mathbf{A})$ is invariant under $\psi^{-1}$, hence  
+    \begin{alignat*}{2}
+        \EuScript{A} \models \rho(y_1, \ldots, y_n) & \implies (y_1^{\EuScript{A}}, \ldots, y_n^{\EuScript{A}}) \in \rho  & \EuScript{A} \models x \equiv x_i &  \implies x^{\EuScript{A}} = x_i^{\EuScript{A}}  \\
+        & \implies (\psi^{-1}(y_1^{\EuScript{A}}), \ldots, \psi^{-1}(y_n^{\EuScript{A}})) \in \rho  &   & \implies x^{\EuScript{A}}=\psi(a_i) \\
+        & \implies (y_1^{\EuScript{B}}, \ldots, y_n^{\EuScript{B}}) \in \rho  &   & \implies \psi^{-1}(x^{\EuScript{A}}) = a_i   \\
+        & \implies \EuScript{B} \models \rho(y_1, \ldots, y_n)  &    & \implies x^{\EuScript{B}}= a_i  
+    \end{alignat*}
+    Thus $\EuScript{B} \models \Sigma$. 
 \end{proof}
 \end{theorem}
 
@@ -441,7 +474,10 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
         \item if there is $\mathbf{B} \le \mathbf{A}$ such that $\CSP(\mathbf{B})$ is $\NP$-complete, so is $\CSP(\mathbf{A})$. 
     \end{enumerate}
     \begin{proof}
-        Observe that $\Inv(\mathbf{B}) \subseteq \Inv(\mathbf{A})$.
+    Let $\EuScript{A}=(A, \Inv(\mathbf{A}))$ and $\EuScript{B}=(A, \Inv(\mathbf{B}))$. 
+    By definition $\CSP(\mathbf{B})$ is polynomial-time reducible to $\CSP(\mathbf{A})$ iff 
+    $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
+    But that $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$ is obvious since $\Inv(\mathbf{B}) \subseteq \Inv(\mathbf{A})$.
     \end{proof}
 \end{theorem}
 
@@ -477,6 +513,24 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
         it is clear that $\EuScript{A} \models T$ iff $\EuScript{B} \models \Sigma$. 
     \end{proof}
 \end{theorem}
+
+
+\begin{lemma}
+    \label{ess-unary}
+    Let $\EuScript{A}$ be a relational structure. 
+    If $\Pol(\EuScript{A})$ contains essentially unary operations only, $\CSP(\EuScript{A})$ is $\NP$-complete. 
+\end{lemma}
+
+\begin{corollary}
+    Let $\mathbf{A}$ be a finite 
+    algebra. 
+    If there is $\mathbf{B} \in HS(\mathbf{A})$ such that $\Clo(\mathbf{B}) = \{\pi^n_i: 1 \le i \le n, n \in \omega\}$, then 
+    $\CSP(\mathbf{A})$ is $\NP$-complete. 
+    \begin{proof}
+        If $\mathbf{B}$ is such that $\Clo(\mathbf{B}) = \{\pi^n_i: 1 \le i \le n, n \in \omega\}$, then $\CSP(\mathbf{B})$ is $\NP$-complete by Lemma \ref{ess-unary}. 
+        We conclude using the second cluases of Theorems \ref{sub} and \ref{homo}. 
+   \end{proof}
+\end{corollary}
 
 \section{Simple and Striclty Simple Algebras}
 \begin{definition}
@@ -517,20 +571,28 @@ There is a well-defined function
 \end{definition}
 
 \begin{remark}
-    Each $g \in G$ induces an operation $\phi_g: A \to A$ given by $\phi_g(a)=g \cdot a$. 
-    Let $\Phi_\mathbf{G}:=\{\phi_g: g \in G\}$
+    Each $g \in G$ induces 
+    \begin{enumerate}
+        \item a relation $\rho_g:=\{(a, g\cdot a) : a \in A\} \subseteq A^2$. 
+        Let $P_{\mathbf{G}}:=\{\rho_g : g \in G\}$. 
+        \item an operation $\phi_g: A \to A$ given by $\phi_g(a)=g \cdot a$. 
+        Let $\Phi_\mathbf{G}:=\{\phi_g: g \in G\}$. 
+    \end{enumerate}
     Thus a $\mathbf{G}$-set can be seen as an algebra $(A, \Phi_\mathbf{G})$. 
-    The action is primitive iff this algebra is simple. 
+    The action is primitive iff this algebra is simple.
 \end{remark}
 
-\subsection{The Classification Theorem}
+%Let $\mathcal{R}(\mathbf{G}):=\Pol(P_{\mathbf{G}})$. 
 
+\subsection{The classification theorem}
+
+\begin{comment}
 \begin{theorem}
     [\cite{classification}]
     Let $\mathbf{A}$ be a finite strictly simple surjective algebra. 
     If $\mathbf{A}$ has trivial subalgebras, $\mathbf{A}$ is term-equivalent to one of the following: 
     \begin{enumerate}
-        \item \label{one} $(A,\mathcal{R}(\mathbf{G}))$ for some regular group $\mathbf{G}$;
+        \item \label{one} $(A,\Pol(P_{\mathbf{G}}))$ for some regular group $\mathbf{G}$;
         \item \label{three} $(A, \Phi_\mathbf{G})$ for some primitive group $\mathbf{G}$; 
     \end{enumerate}
     or 
@@ -548,47 +610,23 @@ There is a well-defined function
     \end{enumerate}
 \end{theorem}
 
-\begin{lemma}[\cite{jeavons}]
-    Let $\EuScript{A}$ be a relational structure. 
-    If $\Pol(\EuScript{A})$ contains essentially unary operations only, $\CSP(\EuScript{A})$ is $\NP$-complete. 
-\end{lemma}
-
 \begin{lemma}
     Let $\EuScript{A}$ be a relational structure. 
     If $\Pol(\EuScript{A})$ contains a majority operation, $\CSP(\EuScript{\EuScript{A}})$ is polynomial-time decidable. 
 \end{lemma}
 
 \begin{theorem}
-    \label{ess-unary}
+    %\label{ess-unary}
     Let $\mathbf{A}$ be a finite strictly simple surjective algebra.
     If all the elements of $\Clo(\mathbf{A})$ are essentially unary, then $\CSP(\mathbf{A})$ is $\NP$-complete. 
-    %Otherwise, $\CSP(\mathbf{A})$ is polynomial-time decidable. 
+    Otherwise, $\CSP(\mathbf{A})$ is polynomial-time decidable. 
     \begin{proof}
-        If $\mathbf{A}$ is of kind \eqref{one}, we prove that the dual discriminator operation $\delta$ of Example \ref{dual} belongs to $\Clo(\mathbf{A})$. 
-        But $\delta \in \Clo(\mathbf{A})$ if, by definition of $\mathcal{R}(\mathbf{G})$, 
+        %If $\mathbf{A}$ is of kind \eqref{one}, we prove that the dual discriminator operation $\delta$ of Example \ref{dual} belongs to $\Clo(\mathbf{A})$. 
+        %But $\delta \in \Clo(\mathbf{A})$ if, by definition of $\mathcal{R}(\mathbf{G})$, 
 
     \end{proof}
 \end{theorem}
-
-\begin{corollary}
-    Let $\mathbf{A}$ be a finite 
-    %idempotent 
-    algebra. 
-    If there is $\mathbf{B} \in HS(\mathbf{A})$ such that $\Clo(\mathbf{B}) = \{\pi^n_i: 1 \le i \le n, n \in \omega\}$, then 
-    $\CSP(\mathbf{A})$ is $\NP$-complete. 
-    \begin{proof}
-        We can assume without loss of generality that $\mathbf{B}$ is surjective by Theorem \ref{thm_surj}. 
-        Then $\Clo_1(\mathbf{B})$ forms a group 
-        This implies that either B is idempotent or has no nontrivial nonproper subalgebras 
-        \textcolor{red}{Why we can dispose of strictly simple?}
-        If $\mathbf{B}$ is such that $\Clo(\mathbf{B}) = \{\pi^n_i: 1 \le i \le n, n \in \omega\}$, then $\CSP(\mathbf{B})$ is $\NP$-complete by Theorem \ref{ess-unary}. 
-        We conclude using the second cluases of Theorems \ref{sub} and \ref{homo}. 
-   \end{proof}
-\end{corollary}
-
-
-
-
+\end{comment}
 
 \begin{thebibliography}{9}
     \bibitem{bulatov-jeavons}
