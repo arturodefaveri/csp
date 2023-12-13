@@ -157,7 +157,7 @@ Goal: prove
         \item \textbf{idempotent} if $\phi(a, \ldots, a)=a$ for all $a \in A$. 
         \item a \textbf{near unanimity} operation if for all $a,b \in A$ 
         \begin{equation*}
-            \phi(b, a, \ldots, a) = \phi(a, b, \ldots, a) = \cdots = \phi(a, \ldots, a, b)=b 
+            \phi(b, a, \ldots, a) = \phi(a, b, \ldots, a) = \cdots = \phi(a, \ldots, a, b)= a 
         \end{equation*}
     \end{enumerate}
 \end{definition}
@@ -515,7 +515,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
 \end{theorem}
 
 
-\begin{lemma}
+\begin{lemma} [\cite{jeavons}]
     \label{ess-unary}
     Let $\EuScript{A}$ be a relational structure. 
     If $\Pol(\EuScript{A})$ contains essentially unary operations only, $\CSP(\EuScript{A})$ is $\NP$-complete. 
@@ -532,6 +532,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
    \end{proof}
 \end{corollary}
 
+\begin{comment}
 \section{Simple and Striclty Simple Algebras}
 \begin{definition}
     An algebra $\mathbf{A}$ is called \textbf{simple} if the lattice of congruences on $\mathbf{A}$ is $\{\Delta, \nabla \}$. 
@@ -627,6 +628,66 @@ There is a well-defined function
     \end{proof}
 \end{theorem}
 \end{comment}
+
+\appendix
+\section{Classification of Finite Minimal Algebras}
+
+\begin{definition}
+    Let $F$ be a set of function symbols and $\mathbf{A}$ be an algebra over $F$. 
+    We denote by $\Pol(\mathbf{A})$ the smallest set containing 
+    \begin{enumerate}
+        \item $\{f^\mathbf{A}: f \in F\}$; 
+        \item $\{\pi^n_i: A^n \to A, 1 \le i \le n, n \in \omega\}$; 
+        \item the constant $0$-ary operations
+    \end{enumerate}
+and closed under composition. 
+The elements of $\Pol(\mathbf{A})$ are called \textbf{polynomial} operations. 
+We say that two algebras $\mathbf{A}$ and $\mathbf{B}$ on the same carrier are \textbf{polynomial equivalent} if $\Pol(\mathbf{A})=\Pol(\mathbf{B})$. 
+\end{definition}
+
+
+\begin{remark}
+    Explicitly, if $\phi \in \Clo_{m+n}(\mathbf{A})$ and $(a_1, \ldots, a_m) \in A^m$, then 
+    \begin{equation*}
+        \psi: A^n \to A \quad (b_1, \ldots, b_n) \mapsto \phi(a_1, \ldots, a_m,b_1, \ldots, b_n)
+    \end{equation*}
+is a polynomial operation and every polynomial operation arises in this way. 
+\end{remark}
+
+\begin{definition}
+    [provisional]
+    A nontrivial finite algebra $\mathbf{A}$ is minimal iff every noncostant element of $\Pol_1(\mathbf{A})$ is a permutation.
+\end{definition}
+
+The goal is to classify, up to polynomial equivalence, all the finite minimal algebras. 
+
+\begin{example}
+    The following are examples of minimal algebras. 
+    \begin{enumerate}
+        \item any algebra with carrier $2$; 
+        \item a nontrivial finite vector space $\mathbf{A}$ over a finite field $\mathbf{k}$: every $\pi \in \Pol_1(\mathbf{A})$ is of the form $\pi(v)=av+b$ for some $a \in k$, $b \in A$; 
+        \item a group of permutation acting on a finite set\footnote{Let $\mathbf{G}$ be a group acting on a set $A$.  
+        Each $g \in G$ induces an operation $\phi_g: A \to A$ given by $\phi_g(a)=g \cdot a$. 
+        Let $\Phi_\mathbf{G}:=\{\phi_g: g \in G\}$. 
+        A $\mathbf{G}$-set can be seen as an algebra $(A, \Phi_\mathbf{G})$.}.
+    \end{enumerate}
+\end{example}
+
+We shall prove that, up to polynomial equivalence, there are no other finite minimal algebras. 
+
+\begin{theorem}
+    Every algebra $\mathbf{A}$ with carrier $2$ is polynomially equivalent to one of the following: 
+    \begin{enumerate}
+        \item $\mathbf{E}_0= (2, \varnothing)$;
+        \item $\mathbf{E}_1 = (2, \lnot)$; 
+        \item $\mathbf{E}_3 = (2, \land, \lor, \lnot)$; 
+        \item $\mathbf{E}_4 = (2, \land, \lor)$; 
+        \item $\mathbf{E}_5 = (2, \lor)$; 
+        \item $\mathbf{E}_6 = (2, \land)$.
+    \end{enumerate}
+    Each of them is not polynomially equivalent to the other\footnote{A classical theorem by Post states that the set of clones of operations on $2$ is countable infinite. 
+    By this theorem among these there are exactly seven distinct clones on $2$ containing the constants operations.}.
+\end{theorem}
 
 \begin{thebibliography}{9}
     \bibitem{bulatov-jeavons}
