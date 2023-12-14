@@ -40,7 +40,9 @@
 \DeclareMathOperator{\Pol}{Pol}
 \DeclareMathOperator{\NP}{NP}
 \DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\typ}{typ}
 \DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Sym}{Sym}
 
 \begin{document}
 \title{CSP Fast Track}
@@ -133,7 +135,7 @@ Goal: prove
 
 \begin{theorem}
     Let $\mathbf{A}$ be a finite 
-    %idempotent 
+    idempotent 
     algebra. 
     Then the following are equivalent: 
     \begin{enumerate}
@@ -143,6 +145,8 @@ Goal: prove
     \end{enumerate}
     Otherwise, $\CSP(\mathbf{A})$ is $\NP$-complete. 
 \end{theorem}
+
+Observe that 
 
 \section{Kinds of Operations}
 
@@ -268,7 +272,7 @@ Goal: prove
 \end{comment}
 \end{corollary}
 
-\section{Surjective Algebras}
+\section{Surjective and Idempotent Algebras}
 
 \begin{definition}
     An algebra $\mathbf{A}$ is \textbf{surjective} if all the element of $\Clo(\mathbf{A})$ are surjective. 
@@ -357,6 +361,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     Let $\mathbf{A}$ be an algebra. 
     Let $\id(A)$ be the set of idempotent operations on $A$. 
     We define $\Clo_{\id}(\mathbf{A}): = \Clo(\mathbf{A}) \cap \id(A)$. 
+    We say that $\mathbf{A}$ is \textbf{idempotent} of all the elements of $\Clo(\mathbf{A})$ are. 
 \end{definition}
 
 \begin{remark}
@@ -464,6 +469,10 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     Thus $\EuScript{B} \models \Sigma$. 
 \end{proof}
 \end{theorem}
+
+\begin{remark}
+    By the above result, given a finite algebra $\mathbf{A}$, to the purpose of the study of $\CSP(\mathbf{A})$, we can assume without loss of generality that $\mathbf{A}$ is idempotent. 
+\end{remark}
 
 \section{Subalgebras and Images}
 \begin{theorem}
@@ -629,6 +638,15 @@ There is a well-defined function
 \end{theorem}
 \end{comment}
 
+\section{Omitting Types}
+Refer to the Appendix. 
+
+\begin{theorem}
+    Let $\mathbf{A}$ be a finite idempotent algebra. 
+    If $\CSP(\mathbf{A})$ is decidable in polynomial-time, then $\mathbf{1} \notin \typ\{\mathbf{A}\}$.  
+    If $\mathbf{1} \in \typ\{\mathbf{A}\}$, then $\CSP(\mathbf{A})$ is $\NP$-complete. 
+\end{theorem}
+
 \appendix
 \section{Classification of Finite Minimal Algebras}
 
@@ -656,7 +674,7 @@ is a polynomial operation and every polynomial operation arises in this way.
 
 \begin{definition}
     [provisional]
-    A nontrivial finite algebra $\mathbf{A}$ is minimal iff every noncostant element of $\Pol_1(\mathbf{A})$ is a permutation.
+    A nontrivial finite algebra $\mathbf{A}$ is \textbf{minimal} iff every noncostant element of $\Pol_1(\mathbf{A})$ is a permutation.
 \end{definition}
 
 The goal is to classify, up to polynomial equivalence, all the finite minimal algebras. 
@@ -675,7 +693,24 @@ The goal is to classify, up to polynomial equivalence, all the finite minimal al
 
 We shall prove that, up to polynomial equivalence, there are no other finite minimal algebras. 
 
+\begin{lemma}
+    Let $\mathbf{A}$ be a minimal algebra such that every element of $\Pol(\mathbf{A})$ is essentially unary is polynomial to $(A, \Phi_{\mathbf{G}})$ where $\mathbf{G}$ is a finite group acting on $A$. 
+    \begin{proof}
+        Since $\mathbf{A}$ is minimal, $\Pol_1(\mathbf{A}) \cap \Sym(A)$ is a subgroup of $\Sym(A)$. 
+        Let $\mathbf{G}:=\Pol_1(\mathbf{A}) \cap \Sym(A)$. 
+        If $\psi \in \Pol(\mathbf{A})$, either $\psi$ is constant or $\psi$ is essentially unary, hence $(A, \Phi_{\mathbf{G}})$ is polynomially equivalent to $\mathbf{A}$. 
+    \end{proof}
+\end{lemma}
+
 \begin{theorem}
+    [\cite{classification-minimal}]
+    Let $\mathbf{A}$ be a minimal algebra with $|A| > 2$.  
+    If $\Pol(\mathbf{A})$ contains an operation which is not essentially unary, then $\mathbf{A}$ is polynomially equivalent to a $\mathbf{k}$-vector space for a finite field $\mathbf{k}$. 
+\end{theorem}
+
+
+\begin{theorem}
+    \label{classification-two}
     Every algebra $\mathbf{A}$ with carrier $2$ is polynomially equivalent to one of the following: 
     \begin{enumerate}
         \item $\mathbf{E}_0= (2, \varnothing)$;
@@ -686,14 +721,48 @@ We shall prove that, up to polynomial equivalence, there are no other finite min
         \item $\mathbf{E}_6 = (2, \land)$.
     \end{enumerate}
     Each of them is not polynomially equivalent to the other\footnote{A classical theorem by Post states that the set of clones of operations on $2$ is countable infinite. 
-    By this theorem among these there are exactly seven distinct clones on $2$ containing the constants operations.}.
+    By Theorem \ref{classification-two} among these there are exactly seven distinct clones containing the constant operations.
+    However it has been proven that the set of clones on $3$ containing the constant operations is uncountable.}.
 \end{theorem}
+
+\begin{remark}
+    Up to isomorphism, $\mathbf{E}_5 (\simeq \mathbf{E}_6)$ is the only semilattice with two elements, while $\mathbf{E}_4$ and $\mathbf{E}_3$ are the only Boolean algebra and lattice, respectively, with two elements. 
+\end{remark}
+
+\begin{definition}
+    Let $\mathbf{A}$ be a minimal algebra. 
+    We say that $\mathbf{A}$ is of 
+    \begin{enumerate}
+        \item \textbf{type 1} (or \textbf{unary}) if $\mathbf{A}$ is polynomially equivalent to $(A, \Phi_\mathbf{G})$ for some $\mathbf{G} \le \Sym(A)$; 
+        \item \textbf{type 2} (or \textbf{affine}) if $\mathbf{A}$ is polynomially equivalent to a vector space over a finite field $\mathbf{k}$; 
+        \item \textbf{type 3} (or \textbf{Boolean}) if $\mathbf{A}$ is polynomially equivalent to $\mathbf{E}_3$;
+        \item \textbf{type 4} (or \textbf{lattice}) if $\mathbf{A}$ is polynomially equivalent to $\mathbf{E}_4$;
+        \item \textbf{type 5} (or \textbf{semilattice}) if $\mathbf{A}$ is polynomially equivalent to $\mathbf{E}_5$. 
+    \end{enumerate}
+\end{definition}
+
+\begin{theorem}
+    [\cite{wnu}]
+    Let $\mathbf{A}$ be a finite idempotent algebra. 
+    Then $\Clo(\mathbf{A})$ contains a weak near-unanimity operation iff $\mathbf{1} \notin \typ\{HS(\mathbf{A})\}$. 
+\end{theorem}
+
+\textcolor{red}{Important: missing piece: 
+\begin{theorem}
+    Let $\mathbf{A}$ be a finite idempotent algebra. 
+    There is $\mathbf{B} \in HS(\mathbf{A})$ such that $\Clo(\mathbf{B})=\{\pi^n_i: A^n \to A, 1 \le i \le n, n \in \omega\}$ iff $\mathbf{1} \in \typ\{HS(\mathbf{A})\}$. 
+\end{theorem}
+}
 
 \begin{thebibliography}{9}
     \bibitem{bulatov-jeavons}
     Bulatov, A. A.,  Jeavons, P., Krokhin, A. A. (2005). Classifying the complexity of constraints using finite algebras. \emph{SIAM Journal of Computation} 34(3), 720– 742.
     \bibitem{jeavons}
     Jeavons, P. (1998). On the algebraic structure of combinatorial problems, \emph{Theoretical Computer Science} 200, 185–204.
+    \bibitem{wnu}
+    Mar\'oti, M., McKenzie, R. (2008). Existence theorems for weakly symmetric operations. \emph{Algebra Universalis} 59, 463-489.
+    \bibitem{classification-minimal} 
+    P\'alfy, P. P. (1984). Unary polynomials in algebras I. \emph{Algebra Universalis} 18, 262–273.
     \bibitem{classification}
     Szendrei, Á. (1990). Simple surjective algebras having no proper subalgebras. \emph{Journal of the Australian Mathematical Society}, 48(3), 434-454. 
  \end{thebibliography}
