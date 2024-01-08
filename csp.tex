@@ -35,6 +35,7 @@
 \def\E{\exists}
 \def\A{\forall}
 \DeclareMathOperator{\Clo}{Clo}
+\DeclareMathOperator{\Con}{Con}
 \DeclareMathOperator{\CSP}{CSP}
 \DeclareMathOperator{\Inv}{Inv}
 \DeclareMathOperator{\Pol}{Pol}
@@ -85,7 +86,7 @@ Clearly, it is enough to find an assignment only for those variables that appear
     The same applies to algebraic structures (i.e. algebras) and function symbols.  
 \end{remark}
 %Starting point: consider the case when $A$ is finite. 
-%\textcolor{red}{The set of relations is finite?}
+%{The set of relations is finite?}
 
 %We shall say that $\CSP({\EuScript{A}})$ is decidable if there is an algorithm deciding $\CSP({\EuScript{A}})$ for every $\Sigma$ over $R$. 
 
@@ -229,7 +230,7 @@ Observe that
     %over $G$ 
     and $\EuScript{B}=(A, H)$ 
     %over $D$ 
-    such that $H$ is \textcolor{red}{finite} and $H \subseteq \Clo(\EuScript{A})$, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
+    such that $H$ is {finite} and $H \subseteq \Clo(\EuScript{A})$, $\CSP(\EuScript{B})$ is polynomial-time reducible to $\CSP(\EuScript{A})$.
     \begin{proof}
         Let $\Sigma$ be a set of atomic formulas over $H$.  
         Let $\eta(x_1, \ldots, x_n) \in \Sigma$. 
@@ -253,7 +254,7 @@ Observe that
             \item remove $\eta(x_1, \ldots, x_n)$ from $\Sigma$. 
         \end{itemize}
         At the the end we obtain a set of equations $T$ over $G$. 
-        \textcolor{red}{This is a polynomial-time reduction. 
+        {This is a polynomial-time reduction. 
         %(It's reasonable but for me this kind of stuff is like a leap of faith).
         } 
         By \eqref{equiv} it is clear that we can find an assignment $X \to A$ such that $\EuScript{B} \models \Sigma$ iff we can find an assignment such that $\EuScript{A} \models T$.
@@ -302,7 +303,7 @@ Observe that
 Let $\mathbf{A}$ be a finite algebra and let $B$ be a subset of $A$. 
 Let 
 \begin{equation*}
-    \Clo(\mathbf{A})|B:=\{\phi \in \Clo(\mathbf{A}): \phi | B \in O_{\mathbf{B}} \}
+    \Clo(\mathbf{A})|B:=\{\phi \in \Clo(\mathbf{A}): \phi[B^n] \subseteq B \}
 \end{equation*} 
 We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$. 
 
@@ -339,7 +340,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
         Indeed, given $\phi(\rho)(x_1, \ldots, x_n) \in T$, by definition of $\phi(P)$: 
         \begin{align*}
             \EuScript{A} \models \rho(x_1, \ldots, x_n) & \implies (x_1^{\EuScript{A}}, \ldots, x_n^{\EuScript{A}}) \in \rho \\
-            & \implies (\phi(x_1^{\EuScript{A}}), \ldots, \phi(x_n^{\EuScript{A}}) \in \phi(\rho) \\
+            & \implies (\phi(x_1^{\EuScript{A}}), \ldots, \phi(x_n^{\EuScript{A}})) \in \phi(\rho) \\
             & \implies  (x_1^{\EuScript{B}}, \ldots, x_n^{\EuScript{B}}) \in \phi(\rho) \\
             & \implies \EuScript{B} \models \phi(\rho)(x_1, \ldots, x_n) \qedhere
         \end{align*} 
@@ -365,7 +366,6 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     \end{proof}
 \end{theorem}
 
-
 \begin{definition}
     Let $\mathbf{A}$ be an algebra. 
     Let $\id(A)$ be the set of idempotent operations on $A$. 
@@ -384,7 +384,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
     \label{clo1_group}
     Let $A=\{a_1, \ldots, a_k\}$ be a finite set. 
     Let $\mathbf{A}$ be an algebra over $F$. 
-    %\textcolor{red}{such that $\Clo_1(\mathbf{A})$ is a group -- where do we need it?} 
+    %{such that $\Clo_1(\mathbf{A})$ is a group -- where do we need it?} 
     Then the relation 
     \begin{equation}
         \sigma:=\{(\psi(a_1), \ldots, \psi(a_k)) : \psi \in \Clo_1(\mathbf{A})\}
@@ -451,7 +451,7 @@ We denote by $\mathbf{A}|B$ the algebra $(B, \Clo(\mathbf{A})|B)$.
             \item add the formula $\sigma(x_1, \ldots, x_k)$. 
         \end{itemize}
     At the the end we obtain a set of equations $T$ over $\Inv(\mathbf{A})$. 
-    \textcolor{red}{This is a polynomial-time reduction.}
+    {This is a polynomial-time reduction.}
     We finally show that we can find an assignment such that $\EuScript{A} \models T$ iff we can find an assignment such that $\EuScript{B} \models \Sigma$.
     Let $(-)^{\EuScript{B}}: X \to A$ be an assignment such that $\EuScript{B} \models \Sigma$. 
     Consider the assignment 
@@ -648,12 +648,45 @@ There is a well-defined function
 \end{comment}
 
 \section{Omitting Types and Complexity}
-Refer to the Appendix. 
+Refer to the Appendices. 
+
+\begin{comment}
+Let $\mathbf{A}$ be a finite algebra and let $U$ be a subset of $A$. 
+In this section, let 
+\begin{equation*}
+    \Pol(\mathbf{A})|U:=\{\psi \in \Pol(\mathbf{A}): \psi[U^n] \subseteq U \}
+\end{equation*} 
+We denote by $\mathbf{A}|U$ the algebra $(A, \Pol(\mathbf{A})|U)$. 
+
+\begin{lemma}
+    \label{pol}
+    Let $\mathbf{A}$ be a finite idempotent algebra. 
+    If $e \in \Pol_1(\mathbf{A})$ and $U=e(A)$, then 
+    \begin{enumerate}
+        \item $\CSP(\mathbf{A})$ is polynomial-time decidable iff $\CSP(\mathbf{A}|U)$ is. 
+        \item $\CSP(\mathbf{A})$ is $\NP$-complete iff $\CSP(\mathbf{A}|U)$ is. 
+    \end{enumerate}
+    \begin{proof}
+        We show that 
+    \end{proof}
+\end{lemma}
+\end{comment}
 
 \begin{theorem}
     Let $\mathbf{A}$ be a finite idempotent algebra. 
     If $\CSP(\mathbf{A})$ is decidable in polynomial-time, then $\mathbf{1} \notin \typ\{\mathbf{A}\}$.  
     %If $\mathbf{1} \in \typ\{\mathbf{A}\}$, then $\CSP(\mathbf{A})$ is $\NP$-complete. 
+    \begin{proof}
+        Assume for the sake of condtradiction that $\mathbf{1} \in \typ\{\mathbf{A}\}$. 
+        We show that $\CSP(\mathbf{A})$ is $\NP$-complete. 
+        If $\mathbf{1} \in \typ\{\mathbf{A}\}$, then there are $\alpha, \beta \in \Con(\mathbf{A})$ such that $\typ(\alpha, \beta) = \mathbf{1}$.
+        By Theorem \ref{homo}, up to replacing $\mathbf{A}$ by $\mathbf{A}/\alpha$, we can assume without loss of generality that $\alpha = \Delta_A$. 
+
+        Therefore $\Clo(\mathbf{C}|V)$ contains essentially unary operations only. 
+        By Lemma \ref{ess-unary} $\CSP(\mathbf{C}|V)$ is $\NP$-complete. 
+        By Lemma \ref{image} $\CSP(\mathbf{B}|U)$ and $\mathbf{B}$ are $\NP$-complete. 
+        Since $\Clo(\mathbf{A}) \subseteq \Clo(\mathbf{B})$, $\mathbf{A}$ is $\NP$-complete. 
+    \end{proof}
 \end{theorem}
 
 \appendix
@@ -682,7 +715,7 @@ is a polynomial operation.
 \end{example}
 
 \begin{definition}
-    [provisional]
+    [*]
     A nontrivial finite algebra $\mathbf{A}$ is \textbf{minimal} iff every noncostant element of $\Pol_1(\mathbf{A})$ is bijective.
 \end{definition}
 
@@ -750,6 +783,15 @@ We shall prove that, up to polynomial equivalence, there are no other finite min
     \end{enumerate}
 \end{definition}
 
+\begin{definition}[*]
+    Let $\mathbf{A}$ be a finite algebra and let $\delta < \theta \in \Con(\mathbf{A})$. 
+    We say that $\mathbf{A}$ is $(\delta, \theta)$-\textbf{minimal} if for all $e \in \Pol_1(\mathbf{A})$ either $e$ is bijective or $e(\theta) \subseteq \delta$. 
+\end{definition}
+
+\begin{remark}
+    Observe that $\mathbf{A}$ is minimal iff $\mathbf{A}$ is $(\Delta, \nabla)$-minimal. 
+\end{remark}
+
 \section{Omitting Types}
 
 \begin{definition}
@@ -765,31 +807,46 @@ We shall prove that, up to polynomial equivalence, there are no other finite min
     A variety $\mathsf{V}$ is called 
     \begin{enumerate}
     \item \textbf{locally finite} if all its finitely generated algebras are finite; 
-    \item \textbf{finitely presented} if $\mathsf{V}$ has a finite set of function symbols and $\mathsf{V}= \Alg(\Sigma)$ for a finite set of equations $\Sigma$; 
-    \item \textbf{finitely generated} if $\mathsf{V}=HSP(\mathbf{A}_1, \ldots, \mathbf{A}_n)$ for $\mathbf{A}_1, \ldots, \mathbf{A}_n$ finite similar algebras. 
+    %\item \textbf{finitely presented} if $\mathsf{V}$ has a finite set of function symbols and $\mathsf{V}= \Alg(\Sigma)$ for a finite set of equations $\Sigma$; 
+    \item \textbf{finitely generated} if $\mathsf{V}=V(\mathbf{A}_1, \ldots, \mathbf{A}_n)$ for $\mathbf{A}_1, \ldots, \mathbf{A}_n$ finite similar algebras. 
     \end{enumerate}
 \end{definition}
+
+\begin{remark}
+    Observe that $V(\mathbf{A}_1, \ldots, \mathbf{A}_n)=V(\mathbf{A}_1 \times \cdots \times \mathbf{A}_n)$.  
+\end{remark}
 
 \begin{lemma}
     \label{loc_fin}
     Let $\mathsf{V}$ be a variety. 
     If $\mathsf{V}$ is finitely generated then it is locally finite. 
     \begin{proof}
-        Let $\mathsf{V}=HSP(\mathbf{A}_1, \ldots, \mathbf{A}_n)$ with $\mathbf{A}_i$ finite. 
-        Let $\mathbf{A} \in \mathsf{V}$ be finitely generated. 
-        Then there is a surjective homomorphism $\alpha: \mathbf{A}' \to \mathbf{A}$ for some 
+        %Let $\mathsf{V}=HSP(\mathbf{A}_1, \ldots, \mathbf{A}_n)$ with $\mathbf{A}_i$ finite. 
+        %Let $\mathbf{A} \in \mathsf{V}$ be finitely generated. 
+        %Then there is a surjective homomorphism $\alpha: \mathbf{A}' \to \mathbf{A}$ for some 
+        %\begin{equation*}
+        %    \mathbf{A}' \le \mathbf{A}^{\kappa_1}_1 \times \cdots \times \mathbf{A}^{\kappa_n}_n
+        %\end{equation*} 
+        %We prove that $\mathbf{A}'$ is finite. 
+        %Without loss of generality we can assume that $\mathbf{A}'$ is finitely generated: if not we can replace $\mathbf{A}'$ with $\mathbf{A}' /\ker(\alpha)$. 
+        %Since $\mathbf{A}'$ is finitely generated, 
+        %there is a finite number of homomorphisms $\mathbf{A}' \to \mathbf{A}_i$ for every $i$. 
+        %Composing the embedding 
+        %\begin{equation*}
+        %    \mathbf{A}' \hookrightarrow  \mathbf{A}^{\kappa_1}_1 \times \cdots \times \mathbf{A}^{\kappa_n}_n
+        %\end{equation*} with the projections, 
+        %we see that $\mathbf{A}'$ embeds into $\mathbf{A}^{k_1}_1 \times \cdots \times \mathbf{A}^{k_n}_n$ for some \emph{finite} $k_1, \ldots, k_n$, hence it is finite. 
+    
+        By the previuos remark, we can assume that $\mathsf{V}=V(\mathbf{A})$ for some $\mathbf{A}$ finite. 
+        Let $n < \omega$. 
+        We prove that $\mathbf{F}_{\mathsf{V}}(n)$ is finite. 
+        Consider the homomorphism
         \begin{equation*}
-            \mathbf{A}' \le \mathbf{A}^{\kappa_1}_1 \times \cdots \times \mathbf{A}^{\kappa_n}_n
-        \end{equation*} 
-        We prove that $\mathbf{A}'$ is finite. 
-        Without loss of generality we can assume that $\mathbf{A}'$ is finitely generated: if not we can replace $\mathbf{A}'$ with $\mathbf{A}' /\ker(\alpha)$. 
-        Since $\mathbf{A}'$ is finitely generated, 
-        there is a finite number of homomorphisms $\mathbf{A}' \to \mathbf{A}_i$ for every $i$. 
-        Composing the embedding 
-        \begin{equation*}
-            \mathbf{A}' \hookrightarrow  \mathbf{A}^{\kappa_1}_1 \times \cdots \times \mathbf{A}^{\kappa_n}_n
-        \end{equation*} with the projections, 
-        we see that $\mathbf{A}'$ embeds into $\mathbf{A}^{k_1}_1 \times \cdots \times \mathbf{A}^{k_n}_n$ for some \emph{finite} $k_1, \ldots, k_n$, hence it is finite. 
+            \mathbf{F}_{\mathsf{V}}(n) \to \mathbf{A}^{A^n}, \quad t(x_1, \ldots, x_n) \mapsto t^\mathbf{A}
+        \end{equation*}
+        This homomorphism is injective: if $t^\mathbf{A} = s^\mathbf{A}$, then $\mathbf{A} \models t \equiv s$, i.e. $t=s$ in $\mathbf{F}_{\mathsf{V}}(n)$. 
+        %between $\mathbf{F}_{\mathsf{V}}(n)$ and the subalgebra of $\mathbf{A}^{A^n}$ with underlying set $\Clo_n(\mathbf{A})$. 
+        Thus $\mathbf{F}_{\mathsf{V}}(n)$ is finite. 
     \end{proof}
 \end{lemma}
 
@@ -842,13 +899,13 @@ We shall prove that, up to polynomial equivalence, there are no other finite min
 
 \begin{thebibliography}{9}
     \bibitem{bulatov-jeavons}
-    Bulatov, A. A.,  Jeavons, P., Krokhin, A. A. (2005). Classifying the complexity of constraints using finite algebras. \emph{SIAM Journal of Computation} 34(3), 720– 742.
+    Bulatov, A. A.,  Jeavons, P., Krokhin, A. A. (2005). Classifying the complexity of constraints using finite algebras. \emph{SIAM Journal of Computation} 34(3), 720-742.
     \bibitem{jeavons}
-    Jeavons, P. (1998). On the algebraic structure of combinatorial problems, \emph{Theoretical Computer Science} 200, 185–204.
+    Jeavons, P. (1998). On the algebraic structure of combinatorial problems, \emph{Theoretical Computer Science} 200, 185-204.
     \bibitem{wnu}
     Mar\'oti, M., McKenzie, R. (2008). Existence theorems for weakly symmetric operations. \emph{Algebra Universalis} 59, 463-489.
     \bibitem{classification-minimal} 
-    P\'alfy, P. P. (1984). Unary polynomials in algebras I. \emph{Algebra Universalis} 18, 262–273.
+    P\'alfy, P. P. (1984). Unary polynomials in algebras I. \emph{Algebra Universalis} 18, 262-273.
     \bibitem{classification}
     Szendrei, Á. (1990). Simple surjective algebras having no proper subalgebras. \emph{Journal of the Australian Mathematical Society}, 48(3), 434-454. 
  \end{thebibliography}
